@@ -55,7 +55,15 @@ namespace Utils
 
 	namespace AvOwner
 	{
+		/* The ActorValueOwner sub-object sits at a different offset in the Actor on different game versions (and 1.7.x moved the vtables), so the pointer is
+		converted with the game's own RTTI instead of a fixed offset. The old offset is the fallback. */
 		inline RE::Actor* asActor(RE::ActorValueOwner* a_avOwner) {
+			if (!a_avOwner) {
+				return nullptr;
+			}
+			if (auto actor = skyrim_cast<RE::Actor*>(a_avOwner)) {
+				return actor;
+			}
 			return &REL::RelocateMemberIfNewer<RE::Actor>(SKSE::RUNTIME_SSE_1_6_629, a_avOwner, 0xB0, 0xB8);
 		}
 	}

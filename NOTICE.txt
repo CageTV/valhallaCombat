@@ -1,0 +1,20 @@
+Valhalla Combat (ng build) - license notice
+
+Source code: https://github.com/CageTV/valhallaCombat (branch ng-17x), a fork of https://github.com/D7ry/valhallaCombat
+
+Copyright (c) 2024, dTry (D7ry). The source files of Valhalla Combat are licensed under the BSD 3-Clause License (LICENSE in this download).
+The 1.7.x fixes in the source come from the "Valhalla Combat DLL Patch" source (Nexus mod 190197, also BSD 3-Clause). The changes for the ng build
+(an Address Library V5 plugin declaration, guarded call sites and an RTTI conversion of the ActorValueOwner) are by CageTV.
+
+The ValhallaCombat.dll in this download is built with alandtse's CommonLibSSE-NG (https://github.com/alandtse/CommonLibSSE-NG), which is licensed
+under the GNU General Public License v3.0 or later with a modding exception. The compiled ValhallaCombat.dll is therefore distributed under the
+terms of the GNU General Public License, version 3 or (at your option) any later version. The BSD 3-Clause License allows this. The full, unmodified
+GPL-3.0 text is in LICENSE-GPL-3.0.txt.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.

@@ -5,6 +5,20 @@
 #include "include/Utils.h"
 namespace Hooks
 {
+	/* ng build: the call offsets below were measured on one game version. A write_call over anything but a CALL (E8) would corrupt the code, so a hook is
+	installed only when the byte at the site really is a call; otherwise it is skipped and logged. The target is logged to verify the site against the
+	Address Library. */
+	inline bool CheckCallSite(std::uintptr_t a_site, std::string_view a_name)
+	{
+		const auto op = *reinterpret_cast<const std::uint8_t*>(a_site);
+		if (op != 0xE8) {
+			logger::error("hook:{} SKIPPED: the byte at the call site is {:#04x}, not a call (E8). This game version needs a new offset", a_name, op);
+			return false;
+		}
+		const auto rel = *reinterpret_cast<const std::int32_t*>(a_site + 1);
+		logger::info("hook:{} site ok, calls RVA {:#x}", a_name, a_site + 5 + rel - REL::Module::get().base());
+		return true;
+	}
 	class Hook_OnGetAttackStaminaCost  //Actor__sub_140627930+16E	call ActorValueOwner__sub_1403BEC90
 	{
 		/*to cancel out vanilla power attack stamina consumption.*/
@@ -15,7 +29,11 @@ namespace Hooks
 
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37650, 38603) };  //SE:627930 + 16E => 3BEC90 AE:64D350 + 171 => 3D6720
 
-			_getAttackStaminaCost = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x16E, 0x171), getAttackStaminaCost);
+			const auto site = hook.address() + RELOCATION_OFFSET(0x16E, 0x171);
+			if (!CheckCallSite(site, "getAttackStaminaCost")) {
+				return;
+			}
+			_getAttackStaminaCost = trampoline.write_call<5>(site, getAttackStaminaCost);
 			
 			logger::info("hook:OnGetAttackStaminaCost");
 		}
@@ -33,7 +51,11 @@ namespace Hooks
 		{
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37510, 38452) };  // 140620690       140645AA0
 			auto& trampoline = SKSE::GetTrampoline();
-			_HasFlags1 = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x62, 0x6F), HasFlags1);
+			const auto site = hook.address() + RELOCATION_OFFSET(0x62, 0x6F);
+			if (!CheckCallSite(site, "HasFlags1")) {
+				return;
+			}
+			_HasFlags1 = trampoline.write_call<5>(site, HasFlags1);
 			logger::info("hook:CheckStaminaRegenCondition");
 		}
 
@@ -49,7 +71,11 @@ namespace Hooks
 		{
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37510, 38452) };// 140620690       140645AA0
 			auto& trampoline = SKSE::GetTrampoline();
-			_RestoreActorValue = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x176, 0xE1), RestoreActorValue);
+			const auto site = hook.address() + RELOCATION_OFFSET(0x176, 0xE1);
+			if (!CheckCallSite(site, "RestoreActorValue")) {
+				return;
+			}
+			_RestoreActorValue = trampoline.write_call<5>(site, RestoreActorValue);
 			logger::info("hook:OnRestoresActorValue");
 		}
 
@@ -65,7 +91,11 @@ namespace Hooks
 		{
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37673, 38627) };  //140628C20       14064E760
 			auto& trampoline = SKSE::GetTrampoline();
-			_ProcessHit = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x3C0, 0x4A8), processHit);
+			const auto site = hook.address() + RELOCATION_OFFSET(0x3C0, 0x4A8);
+			if (!CheckCallSite(site, "OnMeleeHit processHit")) {
+				return;
+			}
+			_ProcessHit = trampoline.write_call<5>(site, processHit);
 			logger::info("hook:OnMeleeHit");
 		}
 
@@ -217,7 +247,11 @@ namespace Hooks
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37650, 38603) };  //SE:627930 + 38B AE:64D350 +  45A
 			auto& trampoline = SKSE::GetTrampoline();
 
-			_ProcessHit = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x38B, 0x45A), processHit);
+			const auto site = hook.address() + RELOCATION_OFFSET(0x38B, 0x45A);
+			if (!CheckCallSite(site, "OnMeleeCollision processHit")) {
+				return;
+			}
+			_ProcessHit = trampoline.write_call<5>(site, processHit);
 
 			logger::info("hook:OnMeleeCollision");
 		}
@@ -246,7 +280,11 @@ namespace Hooks
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37376, 00000) };
 			auto& trampoline = SKSE::GetTrampoline();
 
-			_GetWantBlock = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x23, 0x00), GetWantBlock);
+			const auto site = hook.address() + RELOCATION_OFFSET(0x23, 0x00);
+			if (!CheckCallSite(site, "GetWantBlock")) {
+				return;
+			}
+			_GetWantBlock = trampoline.write_call<5>(site, GetWantBlock);
 
 			logger::info("hook:OnGetWantBlock");
 		}
@@ -265,7 +303,11 @@ namespace Hooks
 		{
 			auto& trampoline = SKSE::GetTrampoline();
 			REL::Relocation<std::uintptr_t> AttackActionBase{ RELOCATION_ID(48139, 49170) };
-			_PerformAttackAction = trampoline.write_call<5>(AttackActionBase.address() + RELOCATION_OFFSET(0x4D7, 0x435), PerformAttackAction);
+			const auto site = AttackActionBase.address() + RELOCATION_OFFSET(0x4D7, 0x435);
+			if (!CheckCallSite(site, "PerformAttackAction")) {
+				return;
+			}
+			_PerformAttackAction = trampoline.write_call<5>(site, PerformAttackAction);
 			logger::info("hook:OnAttackAction");
 		}
 

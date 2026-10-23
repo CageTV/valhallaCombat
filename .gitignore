@@ -10,4 +10,5 @@ compile_commands.json
 CTestTestfile.cmake
 build
 .clang-format
-.editorconfig
+.editorconfigrelease/
+build/
