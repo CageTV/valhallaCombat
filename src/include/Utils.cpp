@@ -62,7 +62,7 @@ void Utils::Actor::damageav(RE::Actor* a, RE::ActorValue av, float val)
 		return;
 	}
 	if (a) {
-		a->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -val);
+		a->AsActorValueOwner()->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -val);
 	}
 }
 
@@ -83,7 +83,7 @@ void Utils::Actor::restoreav(RE::Actor* a_actor, RE::ActorValue a_actorValue, fl
 		return;
 	}
 	if (a_actor) {
-		a_actor->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, a_actorValue, a_value);
+		a_actor->AsActorValueOwner()->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, a_actorValue, a_value);
 	}
 }
 
@@ -130,7 +130,7 @@ void Utils::Actor::safeRemovePerk(RE::BGSPerk* a_perk, RE::Actor* a_actor)
 
 bool Utils::Actor::isBackFacing(RE::Actor* actor1, RE::Actor* actor2)
 {
-	auto angle = actor1->GetHeadingAngle(actor2);
+	auto angle = actor1->GetHeadingAngle(actor2->GetPosition(), false);
 	if (90 < angle || angle < -90) {
 		return true;
 	} else {

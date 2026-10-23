@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "include/stunHandler.h"
 #include "include/settings.h"
 #include "include/Utils.h"
@@ -51,8 +52,8 @@ static void offsetStaminaRegen(float mult, float upperLimit, float lowerLimit = 
 				staminaRegen = mult * staminaRegenMap[race];
 			}
 			/* Clamp regen val.*/
-			staminaRegen = min(staminaRegen, upperLimit);
-			staminaRegen = max(staminaRegen, lowerLimit);
+			staminaRegen = std::min(staminaRegen, upperLimit);
+			staminaRegen = std::max(staminaRegen, lowerLimit);
 			race->data.staminaRegen = staminaRegen;
 			//logger::info("setting stamina regen rate for race {} to {}.", race->GetName(), staminaRegen);
 		}
@@ -73,9 +74,37 @@ void settings::updateGameSettings() {
 	if (bVal_TrueHUDAPI_SpecialMeter_Acq) {
 		bVal_TrueHUDAPI_SpecialMeter_Acq->SetBool(facts::TrueHudAPI_HasSpecialBarControl);
 	}
+
+	// The MCM's "TrueHUD API: FOUND/NOT FOUND" and "Special Meter: GRANTED/NOT GRANTED"
+	// display is driven by two GlobalVariables in ValhallaCombat.esp (form 0x56A25 =
+	// API obtained, 0x56A23 = special-meter granted), NOT by the game settings above --
+	// the config.json status controls read those globals via hiddenToggles. The DLL
+	// previously only ever set the game settings, so the ESP globals were never updated
+	// and the MCM permanently showed NOT FOUND / NOT GRANTED even when the API was
+	// connected. Set the globals here so the display reflects the real state.
+	if (auto dataHandler = RE::TESDataHandler::GetSingleton()) {
+		const bool bApiObtained = ValhallaCombat::GetSingleton()->ersh_TrueHUD != nullptr;
+		if (auto gvApiObtained = dataHandler->LookupForm<RE::TESGlobal>(0x56A25, "ValhallaCombat.esp")) {
+			gvApiObtained->value = bApiObtained ? 1.0f : 0.0f;
+		}
+		if (auto gvSpecialMeter = dataHandler->LookupForm<RE::TESGlobal>(0x56A23, "ValhallaCombat.esp")) {
+			gvSpecialMeter->value = facts::TrueHudAPI_HasSpecialBarControl ? 1.0f : 0.0f;
+		}
+	}
+
 	logger::info("...done");
 }
-#define SETTINGFILE_PATH "Data\\SKSE\\Plugins\\ValhallaCombat\\Settings.ini"
+// MCM Helper (via this mod's config.json, which uses ModSetting* source types with no
+// path override) writes the user's live settings to its DEFAULT location:
+//   Data\MCM\Settings\ValhallaCombat.ini
+// The DLL originally read a SEPARATE file (Data\SKSE\Plugins\ValhallaCombat\Settings.ini)
+// that MCM Helper never actually writes to -- so every MCM change (execution key, stun
+// toggles, etc.) was saved to the MCM\Settings file but never read by the DLL, which ran
+// on hardcoded defaults instead. Point the DLL at the file MCM Helper genuinely writes so
+// the two are finally connected. Verified against a real MO2 overwrite dump where the
+// user's bound execution key / alt-block key / toggles were all present in this file and
+// absent from the old SKSE\Plugins one.
+#define SETTINGFILE_PATH "Data\\MCM\\Settings\\ValhallaCombat.ini"
 /*Load the setting from ini file with the same name as the variable in code.*/
 #define FETCH(setting) load(setting, #setting)
 /*read settings from ini, and update them into game settings.*/

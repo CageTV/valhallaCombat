@@ -2,11 +2,13 @@
   "name": "valhallacombat",
   "version": "1",
   "dependencies": [
+    "directxtk",
     "fast-cpp-csv-parser",
     "rsm-binary-io",
     "simpleini",
     "spdlog",
     "xbyak",
     "rapidcsv"
-  ]
+  ],
+  "builtin-baseline": "114d9fe62faf35856b45cf55cb93b57028a45d63"
 }

@@ -20,7 +20,7 @@ void executionHandler::tryPcExecution() {
 		}
 		auto actor = handle.get().get();
 		
-		if (!actor || !actor->Is3DLoaded() || actor->IsDead() || actor->IsInKillMove() ||
+		if (!actor || !actor->Is3DLoaded() || Utils::Actor::isDead(actor) || actor->IsInKillMove() ||
 			!actor->GetActorRuntimeData().currentProcess || !actor->GetActorRuntimeData().currentProcess->InHighProcess()) {
 			return;
 		}
@@ -41,7 +41,7 @@ void executionHandler::tryPcExecution() {
 bool executionHandler::attemptExecute(RE::Actor* a_executor, RE::Actor* a_victim) {
 	//check if victim can be executed
 	if (!settings::bStunToggle
-		|| !Utils::Actor::isHumanoid(a_executor) || a_executor->IsDead() || a_victim->IsDead()
+		|| !Utils::Actor::isHumanoid(a_executor) || Utils::Actor::isDead(a_executor) || Utils::Actor::isDead(a_victim)
 		|| !a_executor->Is3DLoaded() || !a_victim->Is3DLoaded()
 		|| a_executor->IsInKillMove() || a_victim->IsInKillMove()
 		|| a_executor->IsOnMount() || a_victim->IsOnMount()

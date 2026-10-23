@@ -89,7 +89,7 @@ public:
 	/// <summary>
 	/// Process an attempt to physically block an attack.
 	/// </summary>
-	void processPhysicalBlock(RE::Actor* blocker, RE::Actor* aggressor, SKSE::stl::enumeration<RE::HitData::Flag, std::uint32_t>, RE::HitData& hitData);
+	void processPhysicalBlock(RE::Actor* blocker, RE::Actor* aggressor, REX::EnumSet<RE::HitData::Flag, std::uint32_t>, RE::HitData& hitData);
 	
 
 	/// <summary>
@@ -136,7 +136,7 @@ private:
 	/// <param name="a_hitFlag"></param>
 	/// <param name="a_hitData"></param>
 	/// <param name="a_realDamage"></param>
-	void processStaminaBlock(RE::Actor* a_blocker, RE::Actor* a_aggressor, SKSE::stl::enumeration<RE::HitData::Flag, std::uint32_t> a_hitFlag, RE::HitData& a_hitData);
+	void processStaminaBlock(RE::Actor* a_blocker, RE::Actor* a_aggressor, REX::EnumSet<RE::HitData::Flag, std::uint32_t> a_hitFlag, RE::HitData& a_hitData);
 	
 	/// <summary>
 	/// Attempt to block an incoming arrow projectile for the blocker.

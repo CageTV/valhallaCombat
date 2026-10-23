@@ -39,14 +39,22 @@ add_library(
 	${SOURCE_FILES}
 	"${VERSION_HEADER}"
 	"${CMAKE_CURRENT_BINARY_DIR}/version.rc"
-	"${ROOT_DIR}/.clang-format"
-	"${ROOT_DIR}/.editorconfig"
 )
 
 target_compile_features(
 	"${PROJECT_NAME}"
 	PRIVATE
-		cxx_std_20
+		cxx_std_23
+)
+
+# SimpleIni.h calls std::numeric_limits<>::max(), which collides with the max()
+# macro from <Windows.h> (pulled in by the Skyrim/CommonLibSSE headers). Defining
+# NOMINMAX project-wide disables those min/max macros so the header compiles.
+target_compile_definitions(
+	"${PROJECT_NAME}"
+	PRIVATE
+		NOMINMAX
+		WIN32_LEAN_AND_MEAN
 )
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
@@ -57,9 +65,9 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 			"/utf-8"	# Set Source and Executable character sets to UTF-8
 			"/Zi"	# Debug Information Format
 
-			"/await"
-
 			"/permissive-"	# Standards conformance
+
+			"/WX-"	# do NOT treat warnings as errors -- overrides the preset's /WX; the remaining warnings are benign (unreferenced params, unused inline helpers) in the mod author's original code, not port issues
 			"/Zc:preprocessor"	# Enable preprocessor conformance mode
 
 			"/wd4200" # nonstandard extension used : zero-sized array in struct/union

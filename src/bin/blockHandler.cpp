@@ -116,13 +116,28 @@ inline bool blockHandler::isTimedBlockElapsedTimeLessThan(float a_in)
 
 void blockHandler::onBlockKeyDown() {
 	if (!settings::bTimedBlockToggle && !settings::bTimedBlockProjectileToggle) {
+		logger::info("[BlockDiag] onBlockKeyDown: both timed-block toggles OFF -> ignored");
 		return;
 	}
 	RE::PlayerCharacter* pc = RE::PlayerCharacter::GetSingleton();
 	if (!Utils::Actor::canBlock(pc)) {
+		logger::info("[BlockDiag] onBlockKeyDown: canBlock()==false -> ignored (not in a blockable state)");
 		return;
 	}
+	// IDEMPOTENCY FIX: onBlockKeyDown can be called from TWO paths -- the animation
+	// hook (automatic block detection) AND the Alt Block Key input handler. If a user
+	// binds the Alt Block Key on a setup where the animation hook ALSO fires, both
+	// call this within the same block, and the second call used to run onPcTimedBlockEnd()
+	// below and cancel the in-progress timing window (which is exactly why binding the
+	// Alt Block Key "broke" perfect block for keyboard/mouse users). Now, if a timed
+	// block window is already open and still valid, a second call is treated as a
+	// duplicate and ignored instead of ending the block -- so both paths can safely
+	// fire and having the Alt Block Key bound no longer interferes with auto-detection.
 	if (isPcTimedBlocking) {
+		if (pcTimedBlockTimer > 0.f) {
+			logger::info("[BlockDiag] onBlockKeyDown: duplicate call while a timed-block window is already open (timer={:.3f}s left) -> ignored, keeping existing window", pcTimedBlockTimer);
+			return;
+		}
 		onPcTimedBlockEnd();
 	}
 
@@ -138,6 +153,7 @@ void blockHandler::onBlockKeyDown() {
 	case blockWindowPenaltyLevel::heavy: blockWindow *= 0.3; break;
 	}
 	pcTimedBlockTimer = blockWindow;
+	logger::info("[BlockDiag] onBlockKeyDown: timed-block window OPENED, window={:.3f}s (penaltyLevel={})", blockWindow, static_cast<int>(pcBlockWindowPenalty));
 	ValhallaCombat::GetSingleton()->activateUpdate(ValhallaCombat::HANDLER::blockHandler);
 }
 
@@ -183,7 +199,7 @@ void blockHandler::OnPcSuccessfulTimedBlock() {
 
 bool blockHandler::isInBlockAngle(RE::Actor* blocker, RE::TESObjectREFR* a_obj) 
 {
-	auto angle = blocker->GetHeadingAngle(a_obj);
+	auto angle = blocker->GetHeadingAngle(a_obj->GetPosition(), false);
 	return (angle <= data::fCombatHitConeAngle && angle >= -data::fCombatHitConeAngle);
 }
 
@@ -301,7 +317,7 @@ void blockHandler::destroyProjectile(RE::Projectile* a_projectile)
 }
 
 #pragma region Process Block
-void blockHandler::processPhysicalBlock(RE::Actor* blocker, RE::Actor* aggressor, SKSE::stl::enumeration<RE::HitData::Flag, std::uint32_t> a_hitFlag, RE::HitData& hitData)
+void blockHandler::processPhysicalBlock(RE::Actor* blocker, RE::Actor* aggressor, REX::EnumSet<RE::HitData::Flag, std::uint32_t> a_hitFlag, RE::HitData& hitData)
 {
 	if (settings::bBlockStaminaToggle) {
 		processStaminaBlock(blocker, aggressor, a_hitFlag, hitData);
@@ -310,7 +326,7 @@ void blockHandler::processPhysicalBlock(RE::Actor* blocker, RE::Actor* aggressor
 
 
 /// <returns>The stamina cost multiplier for a stamina block, based on the plugin settings.</returns>
-inline float getBlockStaminaCostMult(RE::Actor* blocker, RE::Actor* aggressor, SKSE::stl::enumeration<RE::HitData::Flag, std::uint32_t> a_hitFlag)
+inline float getBlockStaminaCostMult(RE::Actor* blocker, RE::Actor* aggressor, REX::EnumSet<RE::HitData::Flag, std::uint32_t> a_hitFlag)
 {
 
 	if (a_hitFlag.any(HITFLAG::kBlockWithWeapon)) {
@@ -343,7 +359,7 @@ inline float getBlockStaminaCostMult(RE::Actor* blocker, RE::Actor* aggressor, S
 	}
 }
 
-void blockHandler::processStaminaBlock(RE::Actor* a_blocker, RE::Actor* a_aggressor, SKSE::stl::enumeration<RE::HitData::Flag, std::uint32_t> a_hitFlag, RE::HitData& a_hitData)
+void blockHandler::processStaminaBlock(RE::Actor* a_blocker, RE::Actor* a_aggressor, REX::EnumSet<RE::HitData::Flag, std::uint32_t> a_hitFlag, RE::HitData& a_hitData)
 {
 	using HITFLAG = RE::HitData::Flag;	
 	float staminaDamage = a_hitData.totalDamage;
@@ -419,6 +435,9 @@ bool blockHandler::processMeleeTimedBlock(RE::Actor* a_blocker, RE::Actor* a_att
 	bool isPerfectblock = a_forcedPerfect || (a_blocker->IsPlayerRef() && this->getIsPcPerfectBlocking());
 
 	if (a_blocker->IsPlayerRef()) {
+		logger::info("[BlockDiag] successful timed block registered. isPerfectBlock={} (forced={}, pcPerfectBlockCountdown={}, isPcHot={}) -> classified as {}",
+			isPerfectblock, a_forcedPerfect, pcPerfectBlockCountdown, isPcHot,
+			isPerfectblock ? "PERFECT BLOCK" : "timed block (not perfect)");
 		if (isPerfectblock) {
 			resetPcPerfectBlockCountdown();
 		}

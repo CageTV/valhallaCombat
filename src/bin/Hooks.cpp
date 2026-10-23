@@ -84,7 +84,7 @@ used to block stamina regen in certain situations.*/
 	{
 		using HITFLAG = RE::HitData::Flag;
 		auto aggressor = hitData.aggressor.get().get();
-		if (!victim || !aggressor || victim->IsDead()) {
+		if (!victim || !aggressor || Utils::Actor::isDead(victim)) {
 			_ProcessHit(victim, hitData);
 			return;
 		}
@@ -178,8 +178,7 @@ used to block stamina regen in certain situations.*/
 	static void unblock_delayed_threadfunc(RE::AttackBlockHandler* a_this, RE::ButtonEvent* a_event, RE::PlayerControlsData* a_data, float a_time) 
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(a_time * 1000))); // wait for, by default, 0.3 sec
-		SKSE_ADDTASK
-		(
+		SKSE::GetTaskInterface()->AddTask(
 			[a_this, a_event, a_data]() 
 			{
 				auto player = RE::PlayerCharacter::GetSingleton();
@@ -193,13 +192,14 @@ used to block stamina regen in certain situations.*/
 				}
 				player->NotifyAnimationGraph("blockStop"); // just in case
 			}
-		)
+		);
 	}
 	void Hook_AttackBlockHandler_OnProcessButton::ProcessButton(RE::AttackBlockHandler* a_this, RE::ButtonEvent* a_event, RE::PlayerControlsData* a_data)
 	{
 		if (a_event->QUserEvent() == "Left Attack/Block") {
 			blockHandler* blockHandler = blockHandler::GetSingleton();
 			if (a_event->IsDown()) {
+				logger::info("[BlockDiag] AUTO-DETECT path: 'Left Attack/Block' user-event DOWN -> calling onBlockKeyDown (this is the normal keyboard/mouse block-detection path)");
 				if (settings::bTimedBlockToggle || settings::bTimedBlockProjectileToggle) {
 					blockHandler->onBlockKeyDown();
 				}

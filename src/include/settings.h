@@ -20,6 +20,13 @@ class settings
 			}
 			if (a_event->eventName == "dmenu_updateSettings" && a_event->strArg == "ValhallaCombat") {
 				settings::readSettings();
+				// Also refresh the game-setting values the MCM reads back for status display
+				// (TrueHUD API found / special-meter granted). Previously these were only set
+				// once during onPostLoadGame -- which runs before TrueHUD's async special-bar
+				// registration completes -- so the MCM permanently showed "NOT FOUND / NOT
+				// GRANTED" even though the API was actually connected. Refreshing here means
+				// opening the MCM always shows the current, true status.
+				settings::updateGameSettings();
 			}
 
 			return EventResult::kContinue;
@@ -32,11 +39,11 @@ class settings
 			auto eventSource = SKSE::GetModCallbackEventSource();
 
 			if (!eventSource) {
-				ERROR("EventSource not found!");
+				logger::error("EventSource not found!");
 				return false;
 			}
 			eventSource->AddEventSink(&singleton);
-			INFO("Register {}", typeid(singleton).name());
+			logger::info("Register {}", typeid(singleton).name());
 			return true;
 		}
 	};

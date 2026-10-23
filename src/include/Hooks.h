@@ -148,8 +148,18 @@ namespace Hooks
 		{
 			REL::Relocation<std::uintptr_t> atkbckVtbl{ RE::VTABLE_AttackBlockHandler[0] };
 
-			_ProcessButton = atkbckVtbl.write_vfunc(0x4, ProcessButton);
-			logger::info("hook:AttackBlockHandler_OnProcessButton");
+			// AttackBlockHandler::ProcessButton is at a DIFFERENT vtable slot depending
+			// on the game version: slot 0x4 on older AE / SE, but slot 0x6 on AE 1.7.99+.
+			// (Confirmed in CommonLibSSE-NG: "ProcessButton ... // 04, 06 (AE 1.7.99)".)
+			// The mod previously hardcoded 0x4, so on 1.7.99 / 1.7.104 it hooked the wrong
+			// function -- the player's block never reached this hook, which is why timed/
+			// perfect block silently did nothing (no [BlockDiag] AUTO-DETECT lines fired).
+			// Pick the correct slot at runtime so block detection works on every version.
+			const std::size_t processButtonVtblIndex =
+				REL::Module::IsAtLeast(SKSE::RUNTIME_SSE_1_7_99) ? 0x6 : 0x4;
+
+			_ProcessButton = atkbckVtbl.write_vfunc(processButtonVtblIndex, ProcessButton);
+			logger::info("hook:AttackBlockHandler_OnProcessButton (ProcessButton vtable slot = {:#x})", processButtonVtblIndex);
 			
 		}
 
@@ -222,6 +232,17 @@ namespace Hooks
 	public:
 		static void install()
 		{
+			// This hook was only ever given an SE address id; its AE id is 00000 (invalid).
+			// On AE/1.7.99 that resolves to a garbage address, and installing a call hook
+			// there corrupts memory -- which tends to crash the game a few minutes later
+			// rather than immediately. Since the author never provided a valid AE target,
+			// skip this hook on AE entirely (it becomes a harmless no-op) instead of
+			// writing into an invalid address. On SE it installs exactly as before.
+			if (REL::Module::IsAE()) {
+				logger::info("hook:OnGetWantBlock skipped on AE (no valid AE address for id 37376)");
+				return;
+			}
+
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37376, 00000) };
 			auto& trampoline = SKSE::GetTrampoline();
 

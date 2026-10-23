@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "offsets.h"
 #include "bin/ValhallaCombat.hpp"
 #include "include/lib/robin_hood.h"
@@ -12,6 +13,21 @@ namespace Utils
 	namespace Actor
 	{
 		bool isHumanoid(RE::Actor* a_actor);
+
+		// 1.7.99-safe replacement for Actor::IsDead().
+		// Actor::IsDead() is a virtual call that, on Skyrim 1.7.99, returns true for
+		// living essential/protected NPCs (a CommonLibSSE-NG dispatch issue). Every
+		// combat feature that gated on IsDead() (hit processing, stun, execution)
+		// therefore bailed to vanilla behavior on 1.7.99. GetLifeState() reads a plain
+		// bitfield with no virtual dispatch and is correct on all versions.
+		[[nodiscard]] inline bool isDead(RE::Actor* a_actor)
+		{
+			if (!a_actor) {
+				return false;
+			}
+			const auto lifeState = a_actor->AsActorState()->GetLifeState();
+			return lifeState == RE::ACTOR_LIFE_STATE::kDead || lifeState == RE::ACTOR_LIFE_STATE::kDying;
+		}
 		RE::TESObjectWEAP* getWieldingWeapon(RE::Actor* a_actor);
 		bool isDualWielding(RE::Actor* a_actor);
 		bool isEquippedShield(RE::Actor* a_actor);
@@ -40,7 +56,7 @@ namespace Utils
 	namespace AvOwner
 	{
 		inline RE::Actor* asActor(RE::ActorValueOwner* a_avOwner) {
-			return &REL::RelocateParentIfNewer<RE::Actor>(SKSE::RUNTIME_SSE_1_6_629, a_avOwner, 0xB0, 0xB8);
+			return &REL::RelocateMemberIfNewer<RE::Actor>(SKSE::RUNTIME_SSE_1_6_629, a_avOwner, 0xB0, 0xB8);
 		}
 	}
 }
@@ -258,13 +274,13 @@ public:
 		auto uiStrHolder = RE::InterfaceStrings::GetSingleton();
 		auto factory = factoryManager->GetCreator<RE::MessageBoxData>(uiStrHolder->messageBoxData);
 		auto messageBox = factory->Create();
-		messageBox->unk4C = 4;
-		messageBox->unk38 = 10;
+		messageBox->buttonPressOffset = 4;  // was unk4C (offset 0x4C)
+		messageBox->warningType = 10;       // was unk38 (offset 0x38)
 		messageBox->bodyText = a_message;
 		auto gameSettings = RE::GameSettingCollection::GetSingleton();
 		auto sOk = gameSettings->GetSetting("sOk");
 		messageBox->buttonText.push_back(sOk->GetString());
-		messageBox->QueueMessage();
+		RE::MessageBoxMenu::QueueMessage(messageBox);  // was messageBox->QueueMessage(); now a static method
 	}
 #pragma endregion
 	/*Clamp the raw damage to be no more than the aggressor's max raw melee damage output.*/
@@ -272,7 +288,7 @@ public:
 		auto a_weapon = Utils::Actor::getWieldingWeapon(aggressor);
 		if (a_weapon) {
 			//DEBUG("weapon to clamp damage: {}", a_weapon->GetName());
-			dmg = min(dmg, a_weapon->GetAttackDamage());
+			dmg = std::min(dmg, static_cast<float>(a_weapon->GetAttackDamage()));  // explicit cast so std::min can deduce a single type
 		}
 	}
 
@@ -296,10 +312,10 @@ public:
 	static void resetProjectileOwner(RE::Projectile* a_projectile, RE::Actor* a_actor, RE::hkpCollidable* a_projectile_collidable) {
 		a_projectile->SetActorCause(a_actor->GetActorCause());
 		a_projectile->GetProjectileRuntimeData().shooter = a_actor->GetHandle();
-		uint32_t a_collisionFilterInfo;
+		RE::CFilter a_collisionFilterInfo;  // was uint32_t; GetCollisionFilterInfo now takes RE::CFilter& (NG v6.7.x)
 		a_actor->GetCollisionFilterInfo(a_collisionFilterInfo);
-		a_projectile_collidable->broadPhaseHandle.collisionFilterInfo &= (0x0000FFFF);
-		a_projectile_collidable->broadPhaseHandle.collisionFilterInfo |= (a_collisionFilterInfo << 16);
+		a_projectile_collidable->broadPhaseHandle.collisionFilterInfo.filter &= (0x0000FFFF);  // .collisionFilterInfo is now RE::CFilter, operate on .filter
+		a_projectile_collidable->broadPhaseHandle.collisionFilterInfo.filter |= (a_collisionFilterInfo.filter << 16);
 	}
 
 	static inline bool ApproximatelyEqual(float A, float B)
@@ -364,9 +380,9 @@ public:
 				float t1 = 0.5f * (-b - uglyNumber) / a;
 
 				// Assign the lowest positive time to t to aim at the earliest hit
-				t = min(t0, t1);
+				t = std::min(t0, t1);
 				if (t < FLT_EPSILON) {
-					t = max(t0, t1);
+					t = std::max(t0, t1);
 				}
 
 				if (t < FLT_EPSILON) {

@@ -124,7 +124,7 @@ void stunHandler::update() {
 			continue;
 		}
 		
-		if (actor->IsDead()) {
+		if (Utils::Actor::isDead(actor)) {
 			safeErase_StunBrokenActors(one_handle);
 			TrueHUDUtils::revertSpecialMeter(actor);
 			it = actorStunDataMap.erase(it);

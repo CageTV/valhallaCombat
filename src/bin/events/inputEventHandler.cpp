@@ -42,6 +42,7 @@ EventResult inputEventHandler::ProcessEvent(RE::InputEvent* const* a_event, RE::
 				break;
 			}
 			if (key == settings::iAltBlockKey) {
+				logger::info("[BlockDiag] Alt Block Key MATCHED (key={}, iAltBlockKey={}), isDown={}", key, settings::iAltBlockKey, button->IsDown());
 				if (button->IsDown()) {
 					if (settings::bTimedBlockToggle || settings::bTimedBlockProjectileToggle) {
 						blockHandler::GetSingleton()->onBlockKeyDown();
