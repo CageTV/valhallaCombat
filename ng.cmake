@@ -1,4 +1,4 @@
-# ValhallaCombat.dll on alandtse's CommonLibSSE-NG (Skyrim 1.5.97 to 1.6.1170 and 1.7.x, SE and AE); included by E:/WorkSpace/ng-build/CMakeLists.txt (see ng_plugin there).
+# ValhallaCombat.dll on alandtse's CommonLibSSE-NG (Skyrim 1.6.1170 and newer (AE, including 1.7.x)); included by E:/WorkSpace/ng-build/CMakeLists.txt (see ng_plugin there).
 find_path(VC_SIMPLEINI_INCLUDE_DIRS "SimpleIni.h")
 ng_plugin(TARGET ValhallaCombat NAME ValhallaCombat VERSION 1.0.0 AUTHOR "D7ry and CageTV" ROOT "${CMAKE_CURRENT_LIST_DIR}"
     SOURCES src/bin/main.cpp src/bin/AI.cpp src/bin/attackHandler.cpp src/bin/balanceHandler.cpp src/bin/blockCommitment.cpp src/bin/blockHandler.cpp
