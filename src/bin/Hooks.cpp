@@ -144,6 +144,27 @@ used to block stamina regen in certain situations.*/
 
 	void Hook_OnMeleeCollision::processHit(RE::Actor* a_aggressor, RE::Actor* a_victim, std::int64_t a_int1, bool a_bool, void* a_unkptr)
 	{
+		{
+			static std::atomic<int> diagOther{ 0 };   // DIAG for the 1.7.x port, remove once the melee hit site is settled
+			static std::atomic<int> diagPlayer{ 0 };
+			const bool player = (a_aggressor && a_aggressor->IsPlayerRef()) || (a_victim && a_victim->IsPlayerRef());
+			if (player ? diagPlayer.fetch_add(1) < 40 : diagOther.fetch_add(1) < 4) {
+				logger::info("DIAG melee collision ({}) via site {:#x}: aggressor {} ({}), victim {} ({}), int {}, bool {}, ptr {}", player ? "player involved" : "npcs",
+					reinterpret_cast<std::uintptr_t>(_ReturnAddress()) - REL::Module::get().base() - 5,
+					a_aggressor ? a_aggressor->GetName() : "none", a_aggressor && a_aggressor->IsPlayerRef() ? "player" : "npc",
+					a_victim ? a_victim->GetName() : "none", a_victim && a_victim->IsPlayerRef() ? "player" : "npc", a_int1, a_bool, a_unkptr);
+				MEMORY_BASIC_INFORMATION mbi{};
+				if (a_unkptr && reinterpret_cast<std::uintptr_t>(a_unkptr) > 0x10000 && VirtualQuery(a_unkptr, &mbi, sizeof(mbi)) && mbi.State == MEM_COMMIT &&
+					reinterpret_cast<std::uintptr_t>(a_unkptr) + 0x80 <= reinterpret_cast<std::uintptr_t>(mbi.BaseAddress) + mbi.RegionSize) {
+					std::string hex;
+					const auto bytes = reinterpret_cast<const std::uint8_t*>(a_unkptr);
+					for (int i = 0; i < 0x80; ++i) {
+						hex += std::format("{:02x}{}", bytes[i], (i % 16 == 15) ? "|" : "");
+					}
+					logger::info("DIAG   ptr contents: {}", hex);
+				}
+			}
+		}
 		if (settings::bTimedBlockToggle && blockHandler::GetSingleton()->processMeleeTimedBlock(a_victim, a_aggressor, blockHandler::GetSingleton()->getIsForcedTimedBlocking(a_victim), blockHandler::GetSingleton()->getIsForcedPerfectBlocking(a_victim))) {
 			return;
 		}
