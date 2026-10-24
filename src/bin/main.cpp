@@ -157,6 +157,12 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 	logger::info("{} v{}"sv, Plugin::NAME, Plugin::VERSION.string());
 
 	SKSE::Init(a_skse);
+#ifdef VC_LEGACY_BUILD
+	if (REL::Module::IsVR()) {  // the hook addresses here have no Skyrim VR entries: refuse to load instead of hooking the wrong code
+		logger::error("Skyrim VR is not supported by this build; the plugin is not loaded");
+		return false;
+	}
+#endif
 
 	auto messaging = SKSE::GetMessagingInterface();
 	if (!messaging->RegisterListener("SKSE", MessageHandler)) {
