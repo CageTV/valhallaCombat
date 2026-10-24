@@ -27,6 +27,9 @@ void stunHandler::safeErase_StunBrokenActors(RE::Actor* a_actor) {
 void stunHandler::safeInsert_StunBrokenActors(RE::ActorHandle a_handle) {
 	uniqueLocker lock(mtx_StunBrokenActors);
 	stunBrokenActors.insert(a_handle);
+	if (const auto actor = a_handle.get()) {
+		logger::info("[ExecDiag] stun broken: {}", actor->GetName());
+	}
 }
 void stunHandler::safeInsert_StunBrokenActors(RE::Actor* a_actor) {
 	safeInsert_StunBrokenActors(a_actor->GetHandle());

@@ -22,9 +22,12 @@ void executionHandler::tryPcExecution() {
 		
 		if (!actor || !actor->Is3DLoaded() || Utils::Actor::isDead(actor) || actor->IsInKillMove() ||
 			!actor->GetActorRuntimeData().currentProcess || !actor->GetActorRuntimeData().currentProcess->InHighProcess()) {
-			return;
+			// A stale entry (dead, unloaded, far away) used to cancel the whole attempt, even with a valid kneeling enemy in the list; it is skipped now.
+			logger::info("[ExecDiag] skipped a stun broken entry that cannot be executed (gone, dead, unloaded or in a kill move)");
+			continue;
 		}
 		float dist = pc->GetPosition().GetDistance(actor->GetPosition());
+		logger::info("[ExecDiag] stun broken {} at distance {:.0f}", actor->GetName(), dist);
 		if (dist < 250) {
 			if (dist < curr_min_dist) {
 				curr_min_dist = dist;
@@ -34,7 +37,10 @@ void executionHandler::tryPcExecution() {
 	}
 	
 	if (optimalVictim) {
-		attemptExecute(pc, optimalVictim);
+		const bool ok = attemptExecute(pc, optimalVictim);
+		logger::info("[ExecDiag] execution of {} {}", optimalVictim->GetName(), ok ? "started" : "was refused (see the reasons above)");
+	} else {
+		logger::info("[ExecDiag] no stun broken enemy within 250 units");
 	}
 
 }
@@ -47,7 +53,9 @@ bool executionHandler::attemptExecute(RE::Actor* a_executor, RE::Actor* a_victim
 		|| a_executor->IsOnMount() || a_victim->IsOnMount()
 		|| a_victim->IsPlayerRef() || a_victim->IsPlayerTeammate()
 		|| a_victim->IsEssential() || a_victim->IsInKillMove() || a_victim->AsMagicTarget()->HasEffectWithArchetype(RE::MagicTarget::Archetype::kParalysis)) {
-		//logger::info("Execution preconditions not met, terminating execution.");
+		logger::info("[ExecDiag] refused: stun system {}, executor humanoid {}, executor dead {}, victim dead {}, 3D {}/{}, kill move {}/{}, mounted {}/{}, victim player {} teammate {} essential {}",
+			settings::bStunToggle, Utils::Actor::isHumanoid(a_executor), Utils::Actor::isDead(a_executor), Utils::Actor::isDead(a_victim), a_executor->Is3DLoaded(), a_victim->Is3DLoaded(),
+			a_executor->IsInKillMove(), a_victim->IsInKillMove(), a_executor->IsOnMount(), a_victim->IsOnMount(), a_victim->IsPlayerRef(), a_victim->IsPlayerTeammate(), a_victim->IsEssential());
 		return false;
 	}
 
@@ -58,6 +66,7 @@ bool executionHandler::attemptExecute(RE::Actor* a_executor, RE::Actor* a_victim
 	
 	auto it2 = data::raceMapping.find(victimRace);
 	if (it2 == data::raceMapping.end()) {
+		logger::info("[ExecDiag] refused: race {} is not in the race mapping", victimRace->GetName());
 		return false;
 	}
 	auto victimRaceType = it2->second;
@@ -73,7 +82,7 @@ bool executionHandler::attemptExecute(RE::Actor* a_executor, RE::Actor* a_victim
 	}
 
 	if (weaponType == RE::WEAPON_TYPE::kBow || weaponType == RE::WEAPON_TYPE::kCrossbow) {
-		//logger::info("long range weapon");
+		logger::info("[ExecDiag] refused: a ranged weapon is in hand");
 		return false;
 	}
 

@@ -44,6 +44,7 @@ EventResult inputEventHandler::ProcessEvent(RE::InputEvent* const* a_event, RE::
 			}
 			if (key == settings::iExecutionKey) {
 				if (button->IsDown()) {
+					logger::info("[ExecDiag] execution key {} pressed", key);
 					executionHandler::GetSingleton()->tryPcExecution();
 				}
 				break;
