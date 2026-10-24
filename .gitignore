@@ -13,3 +13,4 @@ build
 .editorconfigrelease/
 build/
 legacy/*.log
+*.esp.bak_*
