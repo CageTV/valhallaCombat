@@ -1,7 +1,7 @@
 #pragma once
 #include "include/hitstop.h"
 
-/* Elden Parry by dTry (Nexus 70240, https://github.com/CageTV/EldenParry, open permissions from the author) as part of Valhalla Combat.
+/* Elden Parry by dTry (Nexus 70240, https://github.com/D7ry/EldenParry, open permissions from the author) as part of Valhalla Combat.
 A light bash has no hit frame; a bash made while an attack lands is a parry: the attacker is staggered, takes Valhalla Combat's parry stun, and projectiles are
 deflected. Changes from the original: it lives inside the Valhalla Combat hooks (one set of hooks, one Precision callback), the stun is an internal call instead of
 the plugin API, the parry sounds and sparks are Valhalla Combat's own (no separate ESL), the actor is taken from the AV owner through RTTI (the old fixed offset is wrong
