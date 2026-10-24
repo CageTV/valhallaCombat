@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "include/stunHandler.h"
 #include "include/settings.h"
+#include "include/menu.h"
 #include "include/Utils.h"
 #include "ValhallaCombat.hpp"
 using namespace inlineUtils;
@@ -104,11 +105,13 @@ void settings::updateGameSettings() {
 // the two are finally connected. Verified against a real MO2 overwrite dump where the
 // user's bound execution key / alt-block key / toggles were all present in this file and
 // absent from the old SKSE\Plugins one.
-#define SETTINGFILE_PATH "Data\\MCM\\Settings\\ValhallaCombat.ini"
+// 1.7.x ng build: the settings live in this mod's own file and are edited in the SKSE Menu Framework page (menu.cpp). A file written by MCM Helper is copied once.
+#define SETTINGFILE_PATH "Data\\SKSE\\Plugins\\ValhallaCombat\\Settings.ini"
 /*Load the setting from ini file with the same name as the variable in code.*/
 #define FETCH(setting) load(setting, #setting)
 /*read settings from ini, and update them into game settings.*/
 void settings::readSettings() {
+	VCMenu::EnsureSettingsFile();
 	logger::info("Read ini settings...");
 	DtryUtils::settingsLoader MCM_Settings(SETTINGFILE_PATH);
 

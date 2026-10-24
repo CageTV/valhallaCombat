@@ -7,6 +7,7 @@
 #include "include/lib/TrueHUDAPI.h"
 #include "ValhallaCombat.hpp"
 #include "include/settings.h"
+#include "include/menu.h"
 #include "include/Utils.h"
 #include "include/lib/ValhallaCombatAPI.h"
 #include "include/ModAPI.h"
@@ -57,6 +58,7 @@ void onPostLoad() {
 	logger::info("Initializing API fetch...");
 	initTrueHUDAPI();
 	initPrecisionAPI();
+	VCMenu::Register();
 	logger::info("...done");
 }
 

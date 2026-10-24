@@ -4,13 +4,14 @@
 #include "include/executionHandler.h"
 #include "include/stunHandler.h"
 #include "include/blockHandler.h"
+#include "include/menu.h"
 using EventType = RE::INPUT_EVENT_TYPE;
 using DeviceType = RE::INPUT_DEVICE;
 const auto ui = RE::UI::GetSingleton();
 
 EventResult inputEventHandler::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*)
 {
-	if (!a_event || RE::UI::GetSingleton()->GameIsPaused()) {
+	if (!a_event || (RE::UI::GetSingleton()->GameIsPaused() && !VCMenu::CaptureActive())) {
 		return EventResult::kContinue;
 	}
 
@@ -33,6 +34,12 @@ EventResult inputEventHandler::ProcessEvent(RE::InputEvent* const* a_event, RE::
 				key = GetGamepadIndex((RE::BSWin32GamepadDevice::Key)key);
 				break;
 			default:
+				continue;
+			}
+			if (VCMenu::CaptureActive()) {  // a key bind in the settings menu is waiting for this press
+				if (button->IsDown()) {
+					VCMenu::OnKeyCaptured(static_cast<int>(key));
+				}
 				continue;
 			}
 			if (key == settings::iExecutionKey) {
