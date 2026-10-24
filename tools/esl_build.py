@@ -1,8 +1,7 @@
 """Builds the light (ESL) Valhalla Combat plugin from the Spriggit export of the original ValhallaCombat.esp (esp/ValhallaCombat).
 
 What it does, working on a copy in esp-esl/:
-  1. the Backstab Bug Fix: the two kill-move idle records Val_KillMoveFrontSideRoot and Val_KillMoveBackSideRoot get the conditions and related idles of the
-     "Valhalla Combat - Backstab Bug Fix" plugin (esp/BackstabFix, Nexus 97195), so that plugin is not needed any more;
+  1. (no Backstab Bug Fix: Moonling's "Valhalla Combat - Backstab Bug Fix", Nexus 97195, stays a separate recommended mod);
   2. drops the MCM Helper quest (ValhallaCombat_MCM_Quest), the only record that needs SkyUI, and the two masters SkyUI_SE.esp and MCMHelper.esp;
   3. renumbers every new record into 000800.. and writes the old -> new map (esl/map_valhalla.json and src/include/FormIdMap.h, used by the DLL
      so Killmoves.ini and other files that name the old FormIDs keep working);
@@ -19,7 +18,6 @@ import sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(HERE, "esp", "ValhallaCombat")
-FIX = os.path.join(HERE, "esp", "BackstabFix")
 WORK = os.path.join(HERE, "esp-esl", "ValhallaCombat")
 OUT = os.path.join(HERE, "release-contents", "ValhallaCombat.esp")
 SPRIGGIT = r"E:\Tabula Rasa\mods\Skyrim-Claude Code Modder's Toolkit\tools\spriggit-cli.sh"
@@ -31,13 +29,7 @@ if os.path.exists(WORK):
     shutil.rmtree(WORK)
 shutil.copytree(SRC, WORK)
 
-# 1. Backstab fix: the fix plugin's version of the two records is the original record plus its changes.
-for name in ("Val_KillMoveBackSideRoot - 00AA81", "Val_KillMoveFrontSideRoot - 00A9C7"):
-    src = os.path.join(FIX, "IdleAnimations", name + SUFFIX)
-    dst = os.path.join(WORK, "IdleAnimations", name + SUFFIX)
-    if not (os.path.exists(src) and os.path.exists(dst)):
-        sys.exit(f"missing {name}")
-    shutil.copyfile(src, dst)
+# 1. (the Backstab Bug Fix by Moonling is not built in: it is a separate recommended mod, Nexus 97195)
 
 # 2. MCM Helper quest and masters
 quest = [f for f in os.listdir(os.path.join(WORK, "Quests")) if f.startswith("ValhallaCombat_MCM_Quest")]

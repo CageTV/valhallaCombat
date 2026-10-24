@@ -27,5 +27,5 @@ Built-in features from other mods by the same author (dTry), included with his p
 - Elden Parry (Nexus 70240, https://github.com/D7ry/EldenParry, author dTry, open permissions): parry on bash, guard bash, projectile deflection (parry.cpp). Its
   animations are not included; install them from Nexus (for example the SHADOWPQ shield and greatsword set).
 Credits of those mods: Black (counter animations), Achang (counter spell), ADRI (power attack behavior patch), Ryan (CommonLibSSE), DropKicker (DKUtil).
-The Backstab Bug Fix by Moonling (Nexus 97195) is built into ValhallaCombat.esp: the conditions and related idles of the two kill move idle records.
+The Backstab Bug Fix by Moonling (Nexus 97195) is NOT included; it stays a separate recommended mod.
 src/include/lib/SKSEMenuFramework.h is the SKSE Menu Framework SDK header, vendored unmodified, under that project's terms.

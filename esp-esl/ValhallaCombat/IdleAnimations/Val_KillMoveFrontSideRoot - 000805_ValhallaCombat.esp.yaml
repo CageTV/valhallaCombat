@@ -21,10 +21,9 @@ Conditions:
     MutagenObjectType: GetPairedAnimationConditionData
     RunOnType: Target
 - MutagenObjectType: ConditionFloat
-  Flags:
-  - OR
   Data:
     MutagenObjectType: GetIsIDConditionData
+    RunOnType: Target
     Object: 000007:Skyrim.esm
 - MutagenObjectType: ConditionFloat
   CompareOperator: NotEqualTo
@@ -60,16 +59,7 @@ Conditions:
     MutagenObjectType: GetActorValueConditionData
     RunOnType: Target
     ActorValue: Paralysis
-- MutagenObjectType: ConditionFloat
-  Data:
-    MutagenObjectType: ShouldAttackKillConditionData
-  ComparisonValue: 1
-- MutagenObjectType: ConditionFloat
-  Data:
-    MutagenObjectType: GetGlobalValueConditionData
-    Global: 100F19:Skyrim.esm
-  ComparisonValue: 1
 RelatedIdles:
-- 000991:Update.esm
+- 000990:Update.esm
 - 0008BE:ValhallaCombat.esp
 AnimationGroupSection: 101
