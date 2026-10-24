@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more de
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-Built-in features from other mods by the same author (dTry), included with his permission: his Nexus profile bio, written when he left modding, states open permissions for all of his mods:
+Built-in features from other mods by the same author (dTry), included with his permission; his Nexus profile (About Me) says: "I grant any mod author permission to modify, fix, port any of my mod, or use any resources within it, without notifying me, in perpetuity, forever, throughout the universe." A screenshot is kept in the source repository (the SurvivalAccord repository, docs/permissions).
 - Stop On Slash (Nexus 66155, https://github.com/D7ry/StopOnSlash): the hit stop and screen shake (src/bin/hitstop.cpp). Changes: no MCM Helper or Papyrus, settings
   in the SKSE Menu Framework page, a locked animation speed table, a checked call-site hook.
 - Elden Counter (Nexus 65579, https://github.com/D7ry/EldenCounter): the guard counter window after a block (blockHandler.cpp). Its plugin EldenCounter.esp and its
