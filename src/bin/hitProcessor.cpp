@@ -50,7 +50,7 @@ void hitProcessor::processHit(RE::Actor* a_aggressor, RE::Actor* a_victim, RE::H
 		}
 	}
 
-	if (stunHandler::GetSingleton()->getIsStunBroken(a_victim) && a_hitData.weapon->IsMelee()) {
+	if (stunHandler::GetSingleton()->getIsStunBroken(a_victim) && a_hitData.weapon && a_hitData.weapon->IsMelee()) {
 		if (a_aggressor->IsPlayerRef()) {
 			if (settings::bAutoExecution) {//player only auto-execute if auto execution is on
 				executionHandler::GetSingleton()->attemptExecute(a_aggressor, a_victim);
@@ -75,4 +75,23 @@ void hitProcessor::processHit(RE::Actor* a_aggressor, RE::Actor* a_victim, RE::H
 		stunHandler::GetSingleton()->processStunDamage(stunHandler::STUNSOURCE::lightAttack, a_hitData.weapon, a_aggressor, a_victim, realDamage);
 	}
 
+}
+
+void hitProcessor::precisionPosthitCallbackFunc(const PRECISION_API::PrecisionHitData& a_precisionHitData, const RE::HitData& a_hitData)
+{
+	auto aggressor = a_precisionHitData.attacker;
+	auto target = a_precisionHitData.target;
+	if (!aggressor || !target || target->GetFormType() != RE::FormType::ActorCharacter) {
+		return;
+	}
+	auto victim = target->As<RE::Actor>();
+	if (!victim || Utils::Actor::isDead(victim)) {
+		return;
+	}
+	static std::atomic<int> logged{ 0 };
+	if (logged.fetch_add(1) < 5) {
+		logger::info("Precision post-hit: {} hit {}, flags {:#x}, weapon {}", aggressor->GetName(), victim->GetName(), static_cast<std::uint32_t>(a_hitData.flags.underlying()),
+			a_hitData.weapon ? a_hitData.weapon->GetName() : "none");
+	}
+	hitProcessor::GetSingleton()->processHit(aggressor, victim, const_cast<RE::HitData&>(a_hitData));
 }

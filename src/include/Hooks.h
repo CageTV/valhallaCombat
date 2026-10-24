@@ -1,7 +1,5 @@
 #pragma once
 
-#include <intrin.h>
-
 #include "SKSE/Trampoline.h"
 #include "include/blockHandler.h"
 #include "include/Utils.h"
@@ -10,83 +8,6 @@ namespace Hooks
 	/* ng build: the call offsets below were measured on one game version. A write_call over anything but a CALL (E8) would corrupt the code, so a hook is
 	installed only when the byte at the site really is a call; otherwise it is skipped and logged. The target is logged to verify the site against the
 	Address Library. */
-	/* Diagnostic for the 1.7.x port: lists every CALL (E8) in the first 0x900 bytes of the hooked functions, as offset -> target RVA, so the call sites can be matched against the
-	Address Library offline (the game executable on disk is encrypted, only memory is readable). */
-	inline void DumpCallSites()
-	{
-		const auto base = REL::Module::get().base();
-		const auto textSeg = REL::Module::get().segment(REL::Segment::textx);
-		const auto textLo = textSeg.address();
-		const auto textHi = textLo + textSeg.size();
-		for (const std::uint64_t id : { 38603ull, 38452ull, 38627ull, 49170ull }) {
-			const auto fn = REL::ID(id).address();
-			std::string line;
-			const auto code = reinterpret_cast<const std::uint8_t*>(fn);
-			for (std::size_t i = 0; i < 0x900; ++i) {
-				if (code[i] != 0xE8) {
-					continue;
-				}
-				const auto target = fn + i + 5 + *reinterpret_cast<const std::int32_t*>(code + i + 1);
-				if (target >= textLo && target < textHi) {
-					line += std::format(" {:x}>{:x}", i, target - base);
-				}
-			}
-			logger::info("DIAG id {} fn RVA {:#x} calls:{}", id, fn - base, line);
-		}
-	}
-
-	/* Diagnostic: every CALL (E8) and JMP (E9) in the code section whose target is one of these functions, as the RVA of the site. */
-	inline void DumpCallers()
-	{
-		const auto base = REL::Module::get().base();
-		const auto textSeg = REL::Module::get().segment(REL::Segment::textx);
-		const auto textLo = textSeg.address();
-		const auto size = textSeg.size();
-		const auto code = reinterpret_cast<const std::uint8_t*>(textLo);
-		for (const std::uint64_t id : { 38586ull, 38459ull, 26429ull }) {
-			const auto target = REL::ID(id).address();
-			std::string calls, jumps;
-			for (std::size_t i = 0; i + 5 <= size; ++i) {
-				const auto op = code[i];
-				if (op != 0xE8 && op != 0xE9) {
-					continue;
-				}
-				if (textLo + i + 5 + *reinterpret_cast<const std::int32_t*>(code + i + 1) == target) {
-					(op == 0xE8 ? calls : jumps) += std::format(" {:x}", textLo + i - base);
-				}
-			}
-			logger::info("DIAG callers of id {} (RVA {:#x}) CALL:{} JMP:{}", id, target - base, calls, jumps);
-		}
-	}
-
-	/* Diagnostic: is one of the functions a virtual function of Actor / Character / PlayerCharacter? Melee hits no longer reach ID 38586 through a call on 1.7.x. */
-	inline void DumpVirtualSlots()
-	{
-		const auto base = REL::Module::get().base();
-		struct Table { const char* name; std::uintptr_t addr; };
-		const Table tables[] = {
-			{ "Actor[0]", REL::Relocation<std::uintptr_t>(RE::VTABLE_Actor[0]).address() },
-			{ "Character[0]", REL::Relocation<std::uintptr_t>(RE::VTABLE_Character[0]).address() },
-			{ "PlayerCharacter[0]", REL::Relocation<std::uintptr_t>(RE::VTABLE_PlayerCharacter[0]).address() },
-		};
-		for (const std::uint64_t id : { 38586ull, 38627ull, 38603ull, 38459ull }) {
-			const auto fn = REL::ID(id).address();
-			std::string hits;
-			for (const auto& tb : tables) {
-				const auto slots = reinterpret_cast<const std::uintptr_t*>(tb.addr);
-				for (std::size_t i = 0; i < 0x400; ++i) {
-					if (slots[i] == fn) {
-						hits += std::format(" {}[{:#x}]", tb.name, i);
-					}
-				}
-			}
-			logger::info("DIAG virtual slots holding id {} (RVA {:#x}):{}", id, fn - base, hits);
-		}
-		for (const auto& tb : tables) {
-			logger::info("DIAG vtable {} RVA {:#x}", tb.name, tb.addr - base);
-		}
-	}
-
 	inline bool CheckCallSite(std::uintptr_t a_site, std::string_view a_name)
 	{
 		const auto op = *reinterpret_cast<const std::uint8_t*>(a_site);
@@ -333,18 +254,13 @@ namespace Hooks
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37650, 38603) };  //SE:627930 + 38B AE:64D350 +  45A
 			auto& trampoline = SKSE::GetTrampoline();
 
-			// The same function (ID 38627) is called at two places in the actor update on 1.7.104 (+0x40A and +0x45A); the player's swings may use either. Both are hooked.
-			for (const std::uintptr_t offset : std::initializer_list<std::uintptr_t>{ RELOCATION_OFFSET(0x38B, 0x45A), RELOCATION_OFFSET(0x38B, 0x40A) }) {
-				const auto site = hook.address() + offset;
-				if (!CheckCallSite(site, "OnMeleeCollision processHit")) {
-					continue;
-				}
-				_ProcessHit = trampoline.write_call<5>(site, processHit);
-				logger::info("hook:OnMeleeCollision at +{:#x}", offset);
-				if (!REL::Module::IsAE()) {
-					break;  // on SE the second offset is not a site
-				}
+			const auto site = hook.address() + RELOCATION_OFFSET(0x38B, 0x45A);
+			if (!CheckCallSite(site, "OnMeleeCollision processHit")) {
+				return;
 			}
+			_ProcessHit = trampoline.write_call<5>(site, processHit);
+
+			logger::info("hook:OnMeleeCollision");
 		}
 	private:
 		static void processHit(RE::Actor* a_aggressor, RE::Actor* a_victim, std::int64_t a_int1, bool a_bool, void* a_unkptr);
@@ -409,61 +325,10 @@ namespace Hooks
 	};
 
 
-	/* Diagnostic for the 1.7.x port: sits on every call to the hit handler (ID 38586) found by DumpCallers and only logs which call site a hit comes through, then forwards the
-	hit unchanged. Swing a weapon, shoot an arrow and cast a spell to tell the melee site apart. */
-	class Hook_HitSiteDiag
-	{
-	public:
-		static void install()
-		{
-			auto& trampoline = SKSE::GetTrampoline();
-			const auto base = REL::Module::get().base();
-			const auto handler = REL::ID(38586).address();
-			for (const std::uintptr_t rva : std::initializer_list<std::uintptr_t>{ 0x68a693, 0x6bba1c, 0x7e62f2, 0x7fab79, 0x800d6a, 0x8b2e91 }) {
-				const auto site = base + rva;
-				if (*reinterpret_cast<const std::uint8_t*>(site) != 0xE8 || site + 5 + *reinterpret_cast<const std::int32_t*>(site + 1) != handler) {
-					logger::info("DIAG hit site {:#x} is not a call to the hit handler on this game version, not hooked", rva);
-					continue;
-				}
-				_func = trampoline.write_call<5>(site, thunk);
-				logger::info("DIAG hit site {:#x} hooked", rva);
-			}
-		}
-
-	private:
-		static void thunk(RE::Actor* a_victim, RE::HitData& a_hitData)
-		{
-			const auto ra = reinterpret_cast<std::uintptr_t>(_ReturnAddress()) - REL::Module::get().base();
-			static std::mutex lock;
-			static std::unordered_map<std::uintptr_t, int> seen;
-			int n = 0;
-			{
-				std::lock_guard g(lock);
-				n = ++seen[ra];
-			}
-			static std::atomic<int> withWeapon{ 0 };
-			if (n <= 3 || (a_hitData.weapon && withWeapon.fetch_add(1) < 40)) {
-				auto aggressor = a_hitData.aggressor.get();
-				logger::info("DIAG hit via call site {:#x} (#{}): aggressor {}, weapon {}, melee {}, flags {:#x}",
-					ra - 5, n, aggressor ? (aggressor->IsPlayerRef() ? "player" : "npc") : "none",
-					a_hitData.weapon ? a_hitData.weapon->GetName() : "none",
-					a_hitData.weapon ? a_hitData.weapon->IsMelee() : false,
-					static_cast<std::uint32_t>(a_hitData.flags.underlying()));
-			}
-			_func(a_victim, a_hitData);
-		}
-
-		static inline REL::Relocation<decltype(thunk)> _func;
-	};
-
 	static void install()
 	{
 		logger::info("Installing hooks...");
 		SKSE::AllocTrampoline(1 << 8);
-		DumpCallSites();
-		DumpCallers();
-		DumpVirtualSlots();
-		Hook_HitSiteDiag::install();
 		Hook_OnGetAttackStaminaCost::install();
 		//Hook_OnCheckStaminaRegenCondition::install(); //todo: fix this hook
 		Hook_OnRestoreActorValue::install();
