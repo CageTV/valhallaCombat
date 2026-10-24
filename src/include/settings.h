@@ -153,11 +153,11 @@ public:
 	static inline bool bDownedStateToggle = false;
 	
 	static inline float fStunTimedBlockMult = 1.f;
-	static inline float fStunParryMult = 1.f;
+	static inline float fStunParryMult = 3.f;
 	static inline float fStunBashMult = 0.3f;
-	static inline float fStunPowerBashMult = 1.f;
-	static inline float fStunNormalAttackMult = 0.f;
-	static inline float fStunPowerAttackMult = 1.f;
+	static inline float fStunPowerBashMult = 2.f;
+	static inline float fStunNormalAttackMult = 0.5f;
+	static inline float fStunPowerAttackMult = 4.f;
 	static inline float fStunCounterAttackMult = 1.2f;
 
 	static inline float fStunUnarmedMult = 1.f;

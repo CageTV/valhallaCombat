@@ -28,6 +28,9 @@ defaults = configparser.ConfigParser(inline_comment_prefixes=(";",))
 defaults.optionxform = str
 defaults.read(os.path.join(SRC, "MCM", "Config", "ValhallaCombat", "settings.ini"), encoding="utf-8")
 
+# Stun needed to break an enemy on the higher difficulties: the shipped defaults were too low for executions to ever trigger.
+OVERRIDES = {"fStunPowerAttackMult": 4.0, "fStunParryMult": 3.0, "fStunPowerBashMult": 2.0, "fStunNormalAttackMult": 0.5}
+
 HIDDEN = {"56A25": "TrueHudApi", "56A26": "TrueHudSpecialMeter", "56A23": "EldenCounterDamage", "56A24": "EldenCounterNpc"}
 
 
@@ -84,6 +87,7 @@ for pi, page in enumerate(cfg["pages"]):
                     dflt = -1.0
             else:
                 dflt = float(defaults.get(section, key))
+        dflt = OVERRIDES.get(key, dflt)  # this build ships its own defaults
         mn = float(vo.get("min", 0))
         mx = float(vo.get("max", 0))
         step = float(vo.get("step", 0))
@@ -99,6 +103,10 @@ for pi, page in enumerate(cfg["pages"]):
             opts = [text(o) for o in vo["options"]]
             nopts = len(opts)
             options = "\\0".join(opts) + "\\0"
+        if t == "hiddenToggle" and vo["sourceForm"].split("|")[1] in ("56A23", "56A24"):
+            continue  # the Nemesis patch flags of the old Elden Counter: nothing reads them any more
+        if label.startswith("Nemesis") or (t == "header" and label == "Elden Counter"):
+            continue
         ctrl = it.get("groupControl", 0)
         hidden = ""
         if t == "hiddenToggle":
