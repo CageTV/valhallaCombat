@@ -571,7 +571,7 @@ namespace DtryUtils
 	private:
 		std::shared_ptr<CSimpleIniA> _ini;
 		const char* _section;
-		int _loadedSettings;
+		int _loadedSettings = 0;
 		const char* _settingsFile;
 	public:
 		settingsLoader(const char* settingsFile)
