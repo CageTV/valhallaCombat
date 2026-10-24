@@ -112,6 +112,9 @@ for pi, page in enumerate(cfg["pages"]):
         def extra_row(kind, key, section, label, help_, mn, mx, step, dflt, dec):
             return (f'\t{{ Kind::{kind}, {cstr(key)}, {cstr(section)}, {cstr(label)}, {cstr(help_)}, {float(mn)}f, {float(mx)}f, {float(step)}f, {float(dflt)}f, {dec}, 0, "", '
                     f'0, 0, {{ 0, 0, 0 }}, {{ 0, 0, 0 }}, 0, Hidden::None }},')
+        rows.append(extra_row("Header", "", "", "Parry for All", "", 0, 0, 0, 0, 0))
+        rows.append(extra_row("Toggle", "bParryForAllBridge", "Compatibility", "Parry for All feeds the stun, experience and guard counter",
+                              "When Parry for All parries an attack, apply the stun damage, block experience, perfect block refill and the guard counter window of Valhalla Combat. Turn off Valhalla Combat's own timed blocking when you use Parry for All.", 0, 1, 0, 1.0, 0))
         rows.append(extra_row("Header", "", "", "Guard counter (Elden Counter, built in)", "", 0, 0, 0, 0, 0))
         rows.append(extra_row("Slider", "fGuardCounterTime", "GuardCounter", "Counter window after a block (s)",
                               "How long after a block a power attack becomes a guard counter. Needs the Elden Counter plugin and animations from Nexus.", 0.2, 3.0, 0.05, 1.0, 2))

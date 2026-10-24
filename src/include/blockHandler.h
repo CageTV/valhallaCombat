@@ -111,6 +111,10 @@ public:
 	/// <returns>Whether a timed block is successfully performed.</returns>
 	bool processMeleeTimedBlock(RE::Actor* a_blocker, RE::Actor* a_attacker, bool a_forced, bool a_forcedPerfect);
 
+	/*Parry for All (Nexus 167873) parried a_attacker: the gameplay effects of a timed block follow (stun, block experience, the stamina rules, the guard counter).
+	The parry itself, its sparks, sound and stagger are Parry for All's. Called from the animation event of the parried actor.*/
+	void onParryForAll(RE::Actor* a_attacker, bool a_perfect);
+
 	
 	/// <summary>
 	/// Process a melee tackle attempt by an actor.

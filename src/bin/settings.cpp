@@ -182,6 +182,7 @@ void settings::readSettings() {
 
 	MCM_Settings.setActiveSection("Compatibility");
 	MCM_Settings.FETCH(bPoiseCompatibility);
+	MCM_Settings.FETCH(bParryForAllBridge);
 
 	MCM_Settings.log();
 	HitStop::ReadSettings();

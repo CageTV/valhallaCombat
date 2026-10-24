@@ -214,6 +214,13 @@ namespace VCMenu
 			line("TrueHUD API", settings::facts::TrueHudAPI_Obtained);
 			line("TrueHUD special meter control", settings::facts::TrueHudAPI_HasSpecialBarControl);
 			line("Precision API (melee hits)", settings::facts::PrecisionAPI_Obtained);
+			const bool pfa = GetModuleHandleA("ParryAll.dll") != nullptr;
+			line("Parry for All", pfa);
+			if (pfa && (settings::bTimedBlockToggle || settings::bTimedBlockProjectileToggle)) {
+				Spacing();
+				TextColored(ImVec4(0.95f, 0.8f, 0.4f, 1.0f), "Parry for All is installed and Valhalla Combat's own timed block is on: two parry windows open on every block.");
+				TextWrapped("Turn off \"Timed Blocking\" and \"Timed block projectiles\" on the Timed Block page. Stun, experience and the guard counter still follow Parry for All's parries.");
+			}
 			Spacing();
 			TextWrapped("Settings are saved to Data/SKSE/Plugins/ValhallaCombat/Settings.ini as you change them and apply at once.");
 		}

@@ -239,6 +239,10 @@ void stunHandler::onStunBroken(RE::Actor* a_actor) {
 
 void stunHandler::damageStun(RE::Actor* a_aggressor, RE::Actor* a_victim, float a_damage) {
 	//DEBUG("Damaging {}'s stun by {} points.", a_victim->GetName(), a_damage);
+	if (a_aggressor && a_aggressor->IsPlayerRef()) {
+		const auto data = safeGet_ActorStunData(a_victim);
+		logger::info("[StunDiag] {} takes {:.1f} stun damage (before: {:.1f} of {:.1f})", a_victim->GetName(), a_damage, data->getCurrentStun(), data->getMaxStun());
+	}
 	if (safeGet_ActorStunData(a_victim)->damageStun(a_damage)) {
 		if (!safeGet_isStunBroken(a_victim)) {//the current damage depletes actor stun, but actor's stunned state is not yet tracked.
 			onStunBroken(a_victim);

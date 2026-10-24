@@ -495,6 +495,42 @@ bool blockHandler::processMeleeTimedBlock(RE::Actor* a_blocker, RE::Actor* a_att
 
 	return true;
 }
+void blockHandler::onParryForAll(RE::Actor* a_attacker, bool a_perfect)
+{
+	if (!settings::bParryForAllBridge || !a_attacker) {
+		return;
+	}
+	const auto targetHandle = a_attacker->GetActorRuntimeData().currentCombatTarget;
+	const auto parrier = targetHandle ? targetHandle.get().get() : nullptr;
+	if (!parrier || Utils::Actor::isDead(parrier)) {
+		return;
+	}
+	static std::atomic<int> logged{ 0 };
+	if (logged.fetch_add(1) < 6) {
+		logger::info("Parry for All: {} parried {} ({})", parrier->GetName(), a_attacker->GetName(), a_perfect ? "perfect" : "normal");
+	}
+	if (parrier->IsPlayerRef()) {
+		if (auto pc = RE::PlayerCharacter::GetSingleton()) {
+			pc->AddSkillExperience(RE::ActorValue::kBlock, settings::fTimedBlockMeleeExp, nullptr, 0);
+		}
+	}
+	float reflectedDamage = 0;
+	if (const auto weapon = Utils::Actor::getWieldingWeapon(parrier)) {
+		reflectedDamage = weapon->GetAttackDamage();
+	} else {
+		reflectedDamage = parrier->CalcUnarmedDamage();
+	}
+	inlineUtils::offsetRealDamage(reflectedDamage, parrier, a_attacker);
+	stunHandler::GetSingleton()->processStunDamage(stunHandler::STUNSOURCE::timedBlock, nullptr, parrier, a_attacker, reflectedDamage);
+	if (a_perfect) {
+		debuffHandler::GetSingleton()->stopDebuff(parrier);
+		Utils::Actor::refillActorValue(parrier, RE::ActorValue::kStamina);  // a perfect block restores the stamina
+	}
+	if (EldenCounterCompatibility::on) {
+		EldenCounterCompatibility::triggerCounter(parrier);
+	}
+}
+
 bool blockHandler::processMeleeTackle(RE::Actor* a_tackler, RE::Actor* a_attacker) {
 	if (!a_tackler->IsPlayerRef()) {
 		return false;

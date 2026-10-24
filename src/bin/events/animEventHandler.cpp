@@ -48,6 +48,12 @@ void animEventHandler::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>*
 	//		blockHandler::GetSingleton()->onBlockStop();
 	//	}
 	//	break;
+	case "GotParriedCMF"_h:  // Parry for All: this actor was parried
+		blockHandler::GetSingleton()->onParryForAll(const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>(), false);
+		break;
+	case "GotPerfParriedCMF"_h:
+		blockHandler::GetSingleton()->onParryForAll(const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>(), true);
+		break;
 	case "TKDR_IFrameEnd"_h:
 		staminaHandler::checkStamina(const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>());
 		break;

@@ -187,6 +187,8 @@ public:
 #pragma endregion
 #pragma region Compatibility
 	static inline bool bPoiseCompatibility = false;
+	/*Let Parry for All's parries feed the stun, experience and guard counter rules of this mod.*/
+	static inline bool bParryForAllBridge = true;
 #pragma endregion
 
 	//TODO: add new settings
