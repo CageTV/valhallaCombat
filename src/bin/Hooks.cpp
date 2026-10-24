@@ -93,7 +93,9 @@ used to block stamina regen in certain situations.*/
 			_ProcessHit(victim, hitData);
 			return;
 		}
-		hitProcessor::GetSingleton()->processHit(aggressor, victim, hitData);
+		if (hitProcessor::claimHit(aggressor, victim)) {
+			hitProcessor::GetSingleton()->processHit(aggressor, victim, hitData);
+		}
 		_ProcessHit(victim, hitData);
 	}
 
@@ -207,6 +209,13 @@ used to block stamina regen in certain situations.*/
 	}
 	void Hook_AttackBlockHandler_OnProcessButton::ProcessButton(RE::AttackBlockHandler* a_this, RE::ButtonEvent* a_event, RE::PlayerControlsData* a_data)
 	{
+		if (settings::bStaminaDebuffToggle && !Hook_OnAttackAction::IsInstalled() && a_event->QUserEvent() == "Right Attack/Block") {
+			// the attack action hook has no valid site on 1.7, so the player's attack button is held back here while in the stamina debuff
+			auto pc = RE::PlayerCharacter::GetSingleton();
+			if (pc && debuffHandler::GetSingleton()->isInDebuff(pc)) {
+				return;
+			}
+		}
 		if (a_event->QUserEvent() == "Left Attack/Block") {
 			blockHandler* blockHandler = blockHandler::GetSingleton();
 			if (a_event->IsDown()) {

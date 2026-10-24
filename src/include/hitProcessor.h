@@ -20,6 +20,9 @@ public:
 	handles are processed from here, with the final hit data.*/
 	static void precisionPosthitCallbackFunc(const PRECISION_API::PrecisionHitData& a_precisionHitData, const RE::HitData& a_hitData);
 
+	/*Hits can reach us from Precision and from the vanilla hit function. True the first time a pair is seen within 50 ms, so one blow is never counted twice.*/
+	static bool claimHit(RE::Actor* a_aggressor, RE::Actor* a_victim);
+
 
 };
 

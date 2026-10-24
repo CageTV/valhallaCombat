@@ -28,6 +28,23 @@ namespace Hooks
 		logger::info("hook:{} site ok, calls RVA {:#x}", a_name, target - REL::Module::get().base());
 		return true;
 	}
+	/*Every call inside [a_base, a_base + a_len) that goes to the function with the given Address Library id. The offset of a call site moves between game
+	versions (on 1.7.104 the old fixed offsets land in the middle of instructions), the function it calls does not, so the site is found by what it calls.*/
+	inline std::vector<std::uintptr_t> FindCallsTo(std::uintptr_t a_base, std::size_t a_len, std::uint64_t a_targetId)
+	{
+		std::vector<std::uintptr_t> sites;
+		const auto                  want = REL::ID(a_targetId).address();
+		for (std::size_t i = 0; i + 5 <= a_len; ++i) {
+			const auto p = a_base + i;
+			if (*reinterpret_cast<const std::uint8_t*>(p) != 0xE8) {
+				continue;
+			}
+			if (p + 5 + *reinterpret_cast<const std::int32_t*>(p + 1) == want) {
+				sites.push_back(p);
+			}
+		}
+		return sites;
+	}
 	class Hook_OnGetAttackStaminaCost  //Actor__sub_140627930+16E	call ActorValueOwner__sub_1403BEC90
 	{
 		/*to cancel out vanilla power attack stamina consumption.*/
@@ -100,7 +117,19 @@ namespace Hooks
 		{
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37673, 38627) };  //140628C20       14064E760
 			auto& trampoline = SKSE::GetTrampoline();
-			const auto site = hook.address() + RELOCATION_OFFSET(0x3C0, 0x4A8);
+			std::uintptr_t site = hook.address() + RELOCATION_OFFSET(0x3C0, 0x4A8);
+			if (REL::Module::IsAtLeast(SKSE::RUNTIME_SSE_1_7_99)) {
+				// 1.7: find the call to the hit function (AE id 38586) inside the collision function instead of trusting the 1.6 offset
+				const auto sites = FindCallsTo(hook.address(), 0x900, 38586);
+				for (const auto s : sites) {
+					logger::info("hook:OnMeleeHit processHit: call to id 38586 at +{:#x}", s - hook.address());
+				}
+				if (sites.size() != 1) {
+					logger::error("hook:OnMeleeHit processHit SKIPPED: found {} calls to id 38586 in id 38627, expected exactly one", sites.size());
+					return;
+				}
+				site = sites.front();
+			}
 			if (!CheckCallSite(site, "OnMeleeHit processHit")) {
 				return;
 			}
@@ -319,13 +348,16 @@ namespace Hooks
 				return;
 			}
 			_PerformAttackAction = trampoline.write_call<5>(site, PerformAttackAction);
+			installed = true;
 			logger::info("hook:OnAttackAction");
 		}
+		static bool IsInstalled() { return installed; }
 
 	private:
 		static bool PerformAttackAction(RE::TESActionData* a_actionData);
 
 		static inline REL::Relocation<decltype(PerformAttackAction)> _PerformAttackAction;
+		static inline bool installed = false;
 	};
 
 
