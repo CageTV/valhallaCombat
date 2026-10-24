@@ -517,7 +517,7 @@ void blockHandler::onParryForAll(RE::Actor* a_attacker, bool a_perfect)
 	}
 	if (parrier->IsPlayerRef()) {
 		if (auto pc = RE::PlayerCharacter::GetSingleton()) {
-			pc->AddSkillExperience(RE::ActorValue::kBlock, settings::fTimedBlockMeleeExp, nullptr, 0);
+			Compat::AddSkillExperience(pc, RE::ActorValue::kBlock, settings::fTimedBlockMeleeExp);
 		}
 	}
 	float reflectedDamage = 0;

@@ -71,11 +71,11 @@ void settings::updateGameSettings() {
 	}
 	RE::Setting* bVal_TrueHudAPI_Acq = gsc->GetSetting("bVal_TrueHudAPI_Acq");
 	if (bVal_TrueHudAPI_Acq) {
-		bVal_TrueHudAPI_Acq->SetBool(ValhallaCombat::GetSingleton()->ersh_TrueHUD != nullptr);
+		Compat::SetBool(bVal_TrueHudAPI_Acq, ValhallaCombat::GetSingleton()->ersh_TrueHUD != nullptr);
 	}
 	RE::Setting* bVal_TrueHUDAPI_SpecialMeter_Acq = gsc->GetSetting("bVal_TrueHUDAPI_SpecialMeter_Acq");
 	if (bVal_TrueHUDAPI_SpecialMeter_Acq) {
-		bVal_TrueHUDAPI_SpecialMeter_Acq->SetBool(facts::TrueHudAPI_HasSpecialBarControl);
+		Compat::SetBool(bVal_TrueHUDAPI_SpecialMeter_Acq, facts::TrueHudAPI_HasSpecialBarControl);
 	}
 
 	// (The TrueHUD / special meter status used to be written into two globals of the plugin for the MCM menu. The SKSE Menu Framework page reads

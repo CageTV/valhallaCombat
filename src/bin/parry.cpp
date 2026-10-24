@@ -117,7 +117,7 @@ namespace Parry
 			reactionHandler::triggerStagger(a_parrier, a_attacker, reactionHandler::kLarge);
 			stunHandler::GetSingleton()->processStunDamage(stunHandler::STUNSOURCE::parry, nullptr, a_parrier, a_attacker, 0);
 			if (a_parrier->IsPlayerRef()) {
-				RE::PlayerCharacter::GetSingleton()->AddSkillExperience(RE::ActorValue::kBlock, g_settings.meleeParryExp, nullptr, 0);
+				Compat::AddSkillExperience(RE::PlayerCharacter::GetSingleton(), RE::ActorValue::kBlock, g_settings.meleeParryExp);
 			}
 			if (g_settings.successfulParryNoCost) {
 				NegateCost(a_parrier);
@@ -134,7 +134,7 @@ namespace Parry
 			blockHandler::GetSingleton()->deflectForParry(a_parrier, a_projectile, a_collidable);
 			PlayEffects(a_parrier);
 			if (a_parrier->IsPlayerRef()) {
-				RE::PlayerCharacter::GetSingleton()->AddSkillExperience(RE::ActorValue::kBlock, g_settings.projectileParryExp, nullptr, 0);
+				Compat::AddSkillExperience(RE::PlayerCharacter::GetSingleton(), RE::ActorValue::kBlock, g_settings.projectileParryExp);
 			}
 			if (g_settings.successfulParryNoCost) {
 				NegateCost(a_parrier);
@@ -150,7 +150,7 @@ namespace Parry
 			}
 			reactionHandler::triggerStagger(a_basher, a_blocker, reactionHandler::kMedium);
 			PlayEffects(a_basher);
-			RE::PlayerCharacter::GetSingleton()->AddSkillExperience(RE::ActorValue::kBlock, g_settings.guardBashExp, nullptr, 0);
+			Compat::AddSkillExperience(RE::PlayerCharacter::GetSingleton(), RE::ActorValue::kBlock, g_settings.guardBashExp);
 		}
 	}
 

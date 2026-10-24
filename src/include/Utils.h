@@ -136,7 +136,7 @@ namespace inlineUtils
 	@param victim: victim of this damage.*/
 	inline void offsetRealDamage(float& damage, RE::Actor* aggressor, RE::Actor* victim) {
 		if ((aggressor) && (aggressor->IsPlayerRef() || aggressor->IsPlayerTeammate())) {
-			switch (RE::PlayerCharacter::GetSingleton()->GetPlayerRuntimeData().difficulty) {
+			switch (Compat::GetDifficulty()) {
 			case RE::DIFFICULTY::kNovice: damage *= data::fDiffMultHPByPCVE; break;
 			case RE::DIFFICULTY::kApprentice: damage *= data::fDiffMultHPByPCE; break;
 			case RE::DIFFICULTY::kAdept: damage *= data::fDiffMultHPByPCN; break;
@@ -146,7 +146,7 @@ namespace inlineUtils
 			}
 		}
 		else if ((victim) && (victim->IsPlayerRef() || victim->IsPlayerTeammate())) {
-			switch (RE::PlayerCharacter::GetSingleton()->GetPlayerRuntimeData().difficulty) {
+			switch (Compat::GetDifficulty()) {
 			case RE::DIFFICULTY::kNovice: damage *= data::fDiffMultHPToPCVE; break;
 			case RE::DIFFICULTY::kApprentice: damage *= data::fDiffMultHPToPCE; break;
 			case RE::DIFFICULTY::kAdept: damage *= data::fDiffMultHPToPCN; break;
@@ -283,13 +283,11 @@ public:
 		auto uiStrHolder = RE::InterfaceStrings::GetSingleton();
 		auto factory = factoryManager->GetCreator<RE::MessageBoxData>(uiStrHolder->messageBoxData);
 		auto messageBox = factory->Create();
-		messageBox->buttonPressOffset = 4;  // was unk4C (offset 0x4C)
-		messageBox->warningType = 10;       // was unk38 (offset 0x38)
 		messageBox->bodyText = a_message;
 		auto gameSettings = RE::GameSettingCollection::GetSingleton();
 		auto sOk = gameSettings->GetSetting("sOk");
 		messageBox->buttonText.push_back(sOk->GetString());
-		RE::MessageBoxMenu::QueueMessage(messageBox);  // was messageBox->QueueMessage(); now a static method
+		Compat::ShowMessageBox(messageBox);
 	}
 #pragma endregion
 	/*Clamp the raw damage to be no more than the aggressor's max raw melee damage output.*/
@@ -321,10 +319,7 @@ public:
 	static void resetProjectileOwner(RE::Projectile* a_projectile, RE::Actor* a_actor, RE::hkpCollidable* a_projectile_collidable) {
 		a_projectile->SetActorCause(a_actor->GetActorCause());
 		a_projectile->GetProjectileRuntimeData().shooter = a_actor->GetHandle();
-		RE::CFilter a_collisionFilterInfo;  // was uint32_t; GetCollisionFilterInfo now takes RE::CFilter& (NG v6.7.x)
-		a_actor->GetCollisionFilterInfo(a_collisionFilterInfo);
-		a_projectile_collidable->broadPhaseHandle.collisionFilterInfo.filter &= (0x0000FFFF);  // .collisionFilterInfo is now RE::CFilter, operate on .filter
-		a_projectile_collidable->broadPhaseHandle.collisionFilterInfo.filter |= (a_collisionFilterInfo.filter << 16);
+		Compat::SetProjectileCollisionOwner(a_actor, a_projectile_collidable);
 	}
 
 	static inline bool ApproximatelyEqual(float A, float B)
@@ -551,7 +546,7 @@ namespace DtryUtils
 
 		~formLoader()
 		{
-			logger::info("Loaded {} forms from {}", _loadedForms, _pluginName);
+			logger::info("Loaded {} forms from {}", _loadedForms, _pluginName.c_str());
 		}
 
 		/*Load a form from the plugin.*/

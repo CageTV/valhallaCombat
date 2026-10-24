@@ -195,7 +195,7 @@ used to block stamina regen in certain situations.*/
 			[a_this, a_event, a_data]() 
 			{
 				auto player = RE::PlayerCharacter::GetSingleton();
-				if (player && !blockHandler::GetSingleton()->isBlockKeyHeld() && (player->IsBlocking() || player->AsActorState()->GetAttackState() == RE::ATTACK_STATE_ENUM::kBash) || player->AsActorState()->IsStaggered()) {
+				if (player && !blockHandler::GetSingleton()->isBlockKeyHeld() && (player->IsBlocking() || player->AsActorState()->GetAttackState() == RE::ATTACK_STATE_ENUM::kBash) || Compat::IsStaggered(player->AsActorState())) {
 					if (a_event) {
 						a_this->ProcessButton(a_event, a_data);
 					}

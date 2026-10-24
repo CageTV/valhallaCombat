@@ -12,3 +12,4 @@ build
 .clang-format
 .editorconfigrelease/
 build/
+legacy/*.log

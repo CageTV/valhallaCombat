@@ -150,7 +150,9 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
     #ifndef NDEBUG
 	while (!IsDebuggerPresent()) { Sleep(100); }
 #endif
+#ifndef VC_LEGACY_BUILD
 	REL::Module::reset();
+#endif
 	InitializeLog();
 	logger::info("{} v{}"sv, Plugin::NAME, Plugin::VERSION.string());
 

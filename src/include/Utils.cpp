@@ -62,7 +62,7 @@ void Utils::Actor::damageav(RE::Actor* a, RE::ActorValue av, float val)
 		return;
 	}
 	if (a) {
-		a->AsActorValueOwner()->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -val);
+		Compat::ModDamageModifier(a, av, -val);
 	}
 }
 
@@ -83,7 +83,7 @@ void Utils::Actor::restoreav(RE::Actor* a_actor, RE::ActorValue a_actorValue, fl
 		return;
 	}
 	if (a_actor) {
-		a_actor->AsActorValueOwner()->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, a_actorValue, a_value);
+		Compat::ModDamageModifier(a_actor, a_actorValue, a_value);
 	}
 }
 
@@ -150,7 +150,7 @@ bool Utils::Actor::canBlock(RE::Actor* a_actor)
 		return true;
 	}
 	RE::ActorState* state = a_actor->AsActorState();
-	return !isJumping(a_actor) && state->GetKnockState() == RE::KNOCK_STATE_ENUM::kNormal && state->GetAttackState() == RE::ATTACK_STATE_ENUM::kNone && !state->IsSwimming() && state->IsWeaponDrawn() && !state->IsSprinting() && !state->IsStaggered();
+	return !isJumping(a_actor) && state->GetKnockState() == RE::KNOCK_STATE_ENUM::kNormal && state->GetAttackState() == RE::ATTACK_STATE_ENUM::kNone && !state->IsSwimming() && state->IsWeaponDrawn() && !state->IsSprinting() && !Compat::IsStaggered(state);
 }
 
 bool Utils::Actor::getGraphVariable(bool& r_gv, RE::Actor* a_actor, const RE::BSFixedString& a_variableName)

@@ -18,6 +18,15 @@
 
 using namespace std::literals;
 
+#ifdef VC_LEGACY_BUILD
+// CharmedBaryon's CommonLibSSE-NG (the legacy build) has stl::enumeration where alandtse's has REX::EnumSet.
+namespace REX
+{
+	template <class E, class U = std::underlying_type_t<E>>
+	using EnumSet = SKSE::stl::enumeration<E, U>;
+}
+#endif
+
 namespace logger = SKSE::log;
 
 namespace util
@@ -43,3 +52,5 @@ namespace std
 #define RELOCATION_OFFSET(SE, AE) REL::VariantOffset(SE, AE, 0).offset()
 
 #include "Plugin.h"
+
+#include "include/compat.h"

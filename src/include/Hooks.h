@@ -10,6 +10,16 @@ namespace Hooks
 	/* ng build: the call offsets below were measured on one game version. A write_call over anything but a CALL (E8) would corrupt the code, so a hook is
 	installed only when the byte at the site really is a call; otherwise it is skipped and logged. The target is logged to verify the site against the
 	Address Library. */
+	/*True on Skyrim 1.7.99 and newer. The legacy build (SE 1.5.97, AE before 1.6.1170) never runs there.*/
+	inline bool IsRuntime17()
+	{
+#ifdef VC_LEGACY_BUILD
+		return false;
+#else
+		return REL::Module::IsAtLeast(SKSE::RUNTIME_SSE_1_7_99);
+#endif
+	}
+
 	inline bool CheckCallSite(std::uintptr_t a_site, std::string_view a_name)
 	{
 		const auto op = *reinterpret_cast<const std::uint8_t*>(a_site);
@@ -118,7 +128,7 @@ namespace Hooks
 			REL::Relocation<uintptr_t> hook{ RELOCATION_ID(37673, 38627) };  //140628C20       14064E760
 			auto& trampoline = SKSE::GetTrampoline();
 			std::uintptr_t site = hook.address() + RELOCATION_OFFSET(0x3C0, 0x4A8);
-			if (REL::Module::IsAtLeast(SKSE::RUNTIME_SSE_1_7_99)) {
+			if (Hooks::IsRuntime17()) {
 				// 1.7: find the call to the hit function (AE id 38586) inside the collision function instead of trusting the 1.6 offset
 				const auto sites = FindCallsTo(hook.address(), 0x900, 38586);
 				for (const auto s : sites) {
@@ -224,7 +234,7 @@ namespace Hooks
 			// perfect block silently did nothing (no [BlockDiag] AUTO-DETECT lines fired).
 			// Pick the correct slot at runtime so block detection works on every version.
 			const std::size_t processButtonVtblIndex =
-				REL::Module::IsAtLeast(SKSE::RUNTIME_SSE_1_7_99) ? 0x6 : 0x4;
+				Hooks::IsRuntime17() ? 0x6 : 0x4;
 
 			_ProcessButton = atkbckVtbl.write_vfunc(processButtonVtblIndex, ProcessButton);
 			logger::info("hook:AttackBlockHandler_OnProcessButton (ProcessButton vtable slot = {:#x})", processButtonVtblIndex);
