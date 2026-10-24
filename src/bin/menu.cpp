@@ -3,6 +3,7 @@
 #include "include/settings.h"
 #include "include/blockHandler.h"
 #include "include/hitstop.h"
+#include "include/parry.h"
 #include "include/lib/SKSEMenuFramework.h"
 
 namespace VCMenu
@@ -216,10 +217,15 @@ namespace VCMenu
 			line("Precision API (melee hits)", settings::facts::PrecisionAPI_Obtained);
 			const bool pfa = GetModuleHandleA("ParryAll.dll") != nullptr;
 			line("Parry for All", pfa);
-			if (pfa && (settings::bTimedBlockToggle || settings::bTimedBlockProjectileToggle)) {
+			if (pfa && Parry::EldenParryActive()) {
 				Spacing();
-				TextColored(ImVec4(0.95f, 0.8f, 0.4f, 1.0f), "Parry for All is installed and Valhalla Combat's own timed block is on: two parry windows open on every block.");
-				TextWrapped("Turn off \"Timed Blocking\" and \"Timed block projectiles\" on the Timed Block page. Stun, experience and the guard counter still follow Parry for All's parries.");
+				TextColored(ImVec4(0.95f, 0.8f, 0.4f, 1.0f), "Parry for All is installed and the built-in Elden Parry is on: two parry systems.");
+				TextWrapped("Pick one on the Parry page (Parry system). Elden Parry turns a bash into the parry; Parry for All makes the block the parry.");
+			}
+			if (Parry::ParryForAllActive() && (settings::bTimedBlockToggle || settings::bTimedBlockProjectileToggle)) {
+				Spacing();
+				TextColored(ImVec4(0.95f, 0.8f, 0.4f, 1.0f), "Parry for All is the parry system and Valhalla Combat's own timed block is on: two parry windows on every block.");
+				TextWrapped("Turn off \"Timed Blocking\" and \"Timed block projectiles\" on the Timed Block page.");
 			}
 			Spacing();
 			TextWrapped("Settings are saved to Data/SKSE/Plugins/ValhallaCombat/Settings.ini as you change them and apply at once.");
@@ -327,40 +333,44 @@ namespace VCMenu
 			}
 		}
 
-		/* Writes one value of the [HitStop] section and has the hit stop read its settings again. */
-		void CommitHitStop(const char* a_key, const std::string& a_text)
+		/* Writes one value of a settings file section and has the owner of the section read its settings again. */
+		void CommitItem(const char* a_section, const char* a_key, const std::string& a_text)
 		{
 			CSimpleIniA ini;
 			ini.SetUnicode();
 			ini.LoadFile(kPath);
-			ini.SetValue("HitStop", a_key, a_text.c_str());
+			ini.SetValue(a_section, a_key, a_text.c_str());
 			std::error_code ec;
 			std::filesystem::create_directories(std::filesystem::path(kPath).parent_path(), ec);
 			ini.SaveFile(kPath);
-			HitStop::ReadSettings();
+			if (std::strcmp(a_section, "HitStop") == 0) {
+				HitStop::ReadSettings();
+			} else {
+				Parry::ReadSettings();
+			}
 		}
 
-		void __stdcall RenderHitStop()
+		/* A page made of a list of settings (hit stop, parry): checkboxes, sliders and lists, grouped by the group name of each item. */
+		void RenderItemPage(const char* a_intro, const char* a_section, const std::vector<HitStop::Item>& a_items)
 		{
-			TextWrapped("Hit stop and screen shake on melee hits (Stop On Slash by dTry, part of Valhalla Combat). Stop time is how long a hit freezes, stop speed how slow the swing "
-						"gets in that time. The multipliers scale the base values by weapon type and for power attacks.");
+			TextWrapped("%s", a_intro);
 			const char* group = "";
-			for (const auto& item : HitStop::Items()) {
+			for (const auto& item : a_items) {
 				if (std::strcmp(group, item.group) != 0) {
 					group = item.group;
 					Spacing();
 					SeparatorText(group);
 				}
-				const std::string label = std::string(item.label) + "##hs" + item.key;
+				const std::string label = std::string(item.label) + "##" + a_section + item.key;
 				if (item.b) {
 					bool v = *item.b;
 					if (Checkbox(label.c_str(), &v)) {
-						CommitHitStop(item.key, v ? "1" : "0");
+						CommitItem(a_section, item.key, v ? "1" : "0");
 					}
 				} else if (item.i) {
 					int v = *item.i;
-					if (Combo(label.c_str(), &v, "Per-actor animation speed\0Global time multiplier (player only)\0")) {
-						CommitHitStop(item.key, std::to_string(v));
+					if (Combo(label.c_str(), &v, item.options ? item.options : "0\0" "1\0" "2\0")) {
+						CommitItem(a_section, item.key, std::to_string(v));
 					}
 				} else if (item.f) {
 					float             v = *item.f;
@@ -371,10 +381,24 @@ namespace VCMenu
 					if (IsItemDeactivatedAfterEdit()) {
 						char text[32];
 						std::snprintf(text, sizeof(text), "%.*f", item.decimals + 1, *item.f);
-						CommitHitStop(item.key, text);
+						CommitItem(a_section, item.key, text);
 					}
 				}
 			}
+		}
+
+		void __stdcall RenderHitStop()
+		{
+			RenderItemPage("Hit stop and screen shake on melee hits (Stop On Slash by dTry, part of Valhalla Combat). Stop time is how long a hit freezes, stop speed how slow the swing "
+						   "gets in that time. The multipliers scale the base values by weapon type and for power attacks.",
+				"HitStop", HitStop::Items());
+		}
+
+		void __stdcall RenderParry()
+		{
+			RenderItemPage("Parry (Elden Parry by dTry, part of Valhalla Combat): a light bash becomes a parry when it lands in the window while an attack hits. The attacker is staggered "
+						   "and loses stun, arrows and spells are deflected, and a power bash is a guard bash. Choose one parry system: this one, or Parry for All.",
+				"Parry", Parry::Items());
 		}
 
 		void __stdcall RenderPage0() { RenderPage(0); }
@@ -422,6 +446,7 @@ namespace VCMenu
 		for (int i = 0; i < static_cast<int>(sizeof(renderers) / sizeof(renderers[0])); ++i) {
 			SKSEMenuFramework::AddSectionItem(kPages[i].name, renderers[i]);
 		}
+		SKSEMenuFramework::AddSectionItem("Parry", RenderParry);
 		SKSEMenuFramework::AddSectionItem("Hit Stop", RenderHitStop);
 		g_registered = true;
 		logger::info("Registered with SKSE Menu Framework {}", SKSEMenuFramework::GetMenuFrameworkVersion());

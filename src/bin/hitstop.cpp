@@ -23,7 +23,9 @@ namespace HitStop
 				g_items.push_back({ key, label, group, v, nullptr, nullptr, mn, mx, dec });
 			};
 
-			g_items.push_back({ "iFrameWork", "Method (0 = per-actor animation speed, 1 = global time, player only)", "General", nullptr, nullptr, &s.framework, 0, 1, 0 });
+			HitStop::Item method{ "iFrameWork", "Method", "General", nullptr, nullptr, &s.framework, 0, 1, 0 };
+			method.options = "Per-actor animation speed\0Global time multiplier (player only)\0";
+			g_items.push_back(method);
 			B("bPChitStop", "Hit stop when the player hits", "General", &s.pcHitStop);
 			B("bNPChitStop", "Hit stop when NPCs hit", "General", &s.npcHitStop);
 			B("bStopOnCreature", "Stop on living creatures and people", "General", &s.stopOnCreature);

@@ -3,6 +3,7 @@
 #include "include/blockHandler.h"
 #include "include/executionHandler.h"
 #include "include/settings.h"
+#include "include/parry.h"
 //all credits to Bingle&Ersh
 constexpr uint32_t hash(const char* data, size_t const size) noexcept
 {
@@ -48,6 +49,12 @@ void animEventHandler::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>*
 	//		blockHandler::GetSingleton()->onBlockStop();
 	//	}
 	//	break;
+	case "blockStop"_h:  // Elden Parry (built in): a bash that starts here opens the parry window
+		Parry::OnBlockStop(const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>());
+		break;
+	case "bashStop"_h:
+		Parry::OnBashStop(const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>());
+		break;
 	case "GotParriedCMF"_h:  // Parry for All: this actor was parried
 		blockHandler::GetSingleton()->onParryForAll(const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>(), false);
 		break;

@@ -1,3 +1,4 @@
+#include "include/parry.h"
 #include "include/Hooks.h"
 #include "include/Utils.h"
 #include "include/blockHandler.h"
@@ -16,7 +17,11 @@ namespace Hooks
 		if (!settings::bNonCombatStaminaCost && !a_actor->IsInCombat()) {
 			return 0;
 		}
-		return _getAttackStaminaCost(avOwner, atkData);
+		const float cost = _getAttackStaminaCost(avOwner, atkData);
+		if (Parry::TakeBashCost(a_actor, atkData, cost)) {
+			return 0;  // a bash is free when the parry works; charged at bashStop otherwise
+		}
+		return cost;
 	}
 #pragma endregion
 
@@ -109,6 +114,9 @@ used to block stamina regen in certain situations.*/
 @return whether a successful deflection is performed by the actor.*/
 	inline bool shouldIgnoreHit(RE::Projectile* a_projectile, RE::hkpAllCdPointCollector* a_AllCdPointCollector)
 	{
+		if (Parry::ShouldIgnoreProjectile(a_projectile, a_AllCdPointCollector)) {
+			return true;  // deflected by a bash (built-in Elden Parry)
+		}
 		if (a_AllCdPointCollector) {
 			for (auto& hit : a_AllCdPointCollector->hits) {
 				auto refrA = RE::TESHavokUtilities::FindCollidableRef(*hit.rootCollidableA);
@@ -144,6 +152,9 @@ used to block stamina regen in certain situations.*/
 
 	void Hook_OnMeleeCollision::processHit(RE::Actor* a_aggressor, RE::Actor* a_victim, std::int64_t a_int1, bool a_bool, void* a_unkptr)
 	{
+		if (Parry::ShouldIgnoreMeleeHit(a_aggressor, a_victim)) {
+			return;  // light bash, guard bash or a parry (built-in Elden Parry)
+		}
 		if (settings::bTimedBlockToggle && blockHandler::GetSingleton()->processMeleeTimedBlock(a_victim, a_aggressor, blockHandler::GetSingleton()->getIsForcedTimedBlocking(a_victim), blockHandler::GetSingleton()->getIsForcedPerfectBlocking(a_victim))) {
 			return;
 		}

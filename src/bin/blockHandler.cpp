@@ -1,4 +1,5 @@
 #include "include/blockHandler.h"
+#include "include/parry.h"
 #include "include/data.h"
 #include "include/settings.h"
 #include "include/Utils.h"
@@ -495,9 +496,14 @@ bool blockHandler::processMeleeTimedBlock(RE::Actor* a_blocker, RE::Actor* a_att
 
 	return true;
 }
+void blockHandler::deflectForParry(RE::Actor* a_deflector, RE::Projectile* a_projectile, RE::hkpCollidable* a_collidable)
+{
+	deflectProjectile(a_deflector, a_projectile, a_collidable);
+}
+
 void blockHandler::onParryForAll(RE::Actor* a_attacker, bool a_perfect)
 {
-	if (!settings::bParryForAllBridge || !a_attacker) {
+	if (!Parry::ParryForAllActive() || !a_attacker) {  // the parry mode setting picks the active parry system
 		return;
 	}
 	const auto targetHandle = a_attacker->GetActorRuntimeData().currentCombatTarget;
@@ -551,9 +557,6 @@ bool blockHandler::processMeleeTackle(RE::Actor* a_tackler, RE::Actor* a_attacke
 }
 PRECISION_API::PreHitCallbackReturn blockHandler::precisionPrehitCallbackFunc(const PRECISION_API::PrecisionHitData& a_precisionHitData) {
 	PRECISION_API::PreHitCallbackReturn ret;
-	if (!settings::bTimedBlockToggle) {
-		return ret;
-	}
 	auto attacker = a_precisionHitData.attacker;
 	if (!attacker) {
 		return ret;
@@ -563,6 +566,14 @@ PRECISION_API::PreHitCallbackReturn blockHandler::precisionPrehitCallbackFunc(co
 		return ret;
 	}
 	if (target->GetFormType() != RE::FormType::ActorCharacter) {
+		return ret;
+	}
+	// Elden Parry (built in): a light bash has no hit, and a hit inside a bashing victim's parry window is parried. One callback per plugin, so it lives here.
+	if (Parry::ShouldIgnoreMeleeHit(attacker, target->As<RE::Actor>())) {
+		ret.bIgnoreHit = true;
+		return ret;
+	}
+	if (!settings::bTimedBlockToggle) {
 		return ret;
 	}
 

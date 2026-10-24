@@ -3,6 +3,7 @@
 #include "include/settings.h"
 #include "include/menu.h"
 #include "include/hitstop.h"
+#include "include/parry.h"
 #include "include/Utils.h"
 #include "ValhallaCombat.hpp"
 using namespace inlineUtils;
@@ -186,6 +187,7 @@ void settings::readSettings() {
 
 	MCM_Settings.log();
 	HitStop::ReadSettings();
+	Parry::ReadSettings();
 	logger::info("...done");
 
 	logger::info("Apply game settings...");

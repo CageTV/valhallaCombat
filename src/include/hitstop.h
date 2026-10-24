@@ -68,6 +68,7 @@ namespace HitStop
 		float       min;
 		float       max;
 		int         decimals;
+		const char* options = nullptr;  // for an int shown as a list: the entries separated by zeros
 	};
 
 	Settings&                  Get();

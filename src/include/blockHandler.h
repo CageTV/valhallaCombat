@@ -115,6 +115,9 @@ public:
 	The parry itself, its sparks, sound and stagger are Parry for All's. Called from the animation event of the parried actor.*/
 	void onParryForAll(RE::Actor* a_attacker, bool a_perfect);
 
+	/*Deflects a projectile for the built-in Elden Parry (deflectProjectile itself is private).*/
+	void deflectForParry(RE::Actor* a_deflector, RE::Projectile* a_projectile, RE::hkpCollidable* a_collidable);
+
 	
 	/// <summary>
 	/// Process a melee tackle attempt by an actor.
