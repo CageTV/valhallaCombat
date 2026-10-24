@@ -2,6 +2,7 @@
 #include "include/MenuTable.h"
 #include "include/settings.h"
 #include "include/blockHandler.h"
+#include "include/hitstop.h"
 #include "include/lib/SKSEMenuFramework.h"
 
 namespace VCMenu
@@ -319,6 +320,56 @@ namespace VCMenu
 			}
 		}
 
+		/* Writes one value of the [HitStop] section and has the hit stop read its settings again. */
+		void CommitHitStop(const char* a_key, const std::string& a_text)
+		{
+			CSimpleIniA ini;
+			ini.SetUnicode();
+			ini.LoadFile(kPath);
+			ini.SetValue("HitStop", a_key, a_text.c_str());
+			std::error_code ec;
+			std::filesystem::create_directories(std::filesystem::path(kPath).parent_path(), ec);
+			ini.SaveFile(kPath);
+			HitStop::ReadSettings();
+		}
+
+		void __stdcall RenderHitStop()
+		{
+			TextWrapped("Hit stop and screen shake on melee hits (Stop On Slash by dTry, part of Valhalla Combat). Stop time is how long a hit freezes, stop speed how slow the swing "
+						"gets in that time. The multipliers scale the base values by weapon type and for power attacks.");
+			const char* group = "";
+			for (const auto& item : HitStop::Items()) {
+				if (std::strcmp(group, item.group) != 0) {
+					group = item.group;
+					Spacing();
+					SeparatorText(group);
+				}
+				const std::string label = std::string(item.label) + "##hs" + item.key;
+				if (item.b) {
+					bool v = *item.b;
+					if (Checkbox(label.c_str(), &v)) {
+						CommitHitStop(item.key, v ? "1" : "0");
+					}
+				} else if (item.i) {
+					int v = *item.i;
+					if (Combo(label.c_str(), &v, "Per-actor animation speed\0Global time multiplier (player only)\0")) {
+						CommitHitStop(item.key, std::to_string(v));
+					}
+				} else if (item.f) {
+					float             v = *item.f;
+					const std::string fmt = std::format("%.{}f", item.decimals);
+					if (SliderFloat(label.c_str(), &v, item.min, item.max, fmt.c_str())) {
+						*item.f = v;
+					}
+					if (IsItemDeactivatedAfterEdit()) {
+						char text[32];
+						std::snprintf(text, sizeof(text), "%.*f", item.decimals + 1, *item.f);
+						CommitHitStop(item.key, text);
+					}
+				}
+			}
+		}
+
 		void __stdcall RenderPage0() { RenderPage(0); }
 		void __stdcall RenderPage1() { RenderPage(1); }
 		void __stdcall RenderPage2() { RenderPage(2); }
@@ -364,6 +415,7 @@ namespace VCMenu
 		for (int i = 0; i < static_cast<int>(sizeof(renderers) / sizeof(renderers[0])); ++i) {
 			SKSEMenuFramework::AddSectionItem(kPages[i].name, renderers[i]);
 		}
+		SKSEMenuFramework::AddSectionItem("Hit Stop", RenderHitStop);
 		g_registered = true;
 		logger::info("Registered with SKSE Menu Framework {}", SKSEMenuFramework::GetMenuFrameworkVersion());
 	}

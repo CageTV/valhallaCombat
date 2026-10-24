@@ -2,6 +2,7 @@
 #include "include/stunHandler.h"
 #include "include/settings.h"
 #include "include/menu.h"
+#include "include/hitstop.h"
 #include "include/Utils.h"
 #include "ValhallaCombat.hpp"
 using namespace inlineUtils;
@@ -176,10 +177,14 @@ void settings::readSettings() {
 	MCM_Settings.FETCH(bAutoExecution);
 	MCM_Settings.FETCH(iExecutionKey);
 
+	MCM_Settings.setActiveSection("GuardCounter");
+	MCM_Settings.FETCH(fGuardCounterTime);
+
 	MCM_Settings.setActiveSection("Compatibility");
 	MCM_Settings.FETCH(bPoiseCompatibility);
 
 	MCM_Settings.log();
+	HitStop::ReadSettings();
 	logger::info("...done");
 
 	logger::info("Apply game settings...");

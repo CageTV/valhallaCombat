@@ -108,6 +108,13 @@ for pi, page in enumerate(cfg["pages"]):
             f'\t{{ Kind::{KIND[t]}, {cstr(key)}, {cstr(section)}, {cstr(label)}, {cstr(help_)}, {mn}f, {mx}f, {step}f, {dflt}f, {decimals}, {nopts}, {cstr(options)}, '
             f'{ctrl}, {neg}, {{ {", ".join(map(str, ors))} }}, {{ {", ".join(map(str, ands))} }}, {skip}, Hidden::{hidden or "None"} }},'
         )
+    if pi == 3:  # Compatibility page: the guard counter window of the built-in Elden Counter
+        def extra_row(kind, key, section, label, help_, mn, mx, step, dflt, dec):
+            return (f'\t{{ Kind::{kind}, {cstr(key)}, {cstr(section)}, {cstr(label)}, {cstr(help_)}, {float(mn)}f, {float(mx)}f, {float(step)}f, {float(dflt)}f, {dec}, 0, "", '
+                    f'0, 0, {{ 0, 0, 0 }}, {{ 0, 0, 0 }}, 0, Hidden::None }},')
+        rows.append(extra_row("Header", "", "", "Guard counter (Elden Counter, built in)", "", 0, 0, 0, 0, 0))
+        rows.append(extra_row("Slider", "fGuardCounterTime", "GuardCounter", "Counter window after a block (s)",
+                              "How long after a block a power attack becomes a guard counter. Needs the Elden Counter plugin and animations from Nexus.", 0.2, 3.0, 0.05, 1.0, 2))
     pages.append((text(page["pageDisplayName"]), rows))
 
 with open(OUT, "w", encoding="utf-8", newline="\n") as f:

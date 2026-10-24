@@ -3,6 +3,7 @@
 #include "SKSE/Trampoline.h"
 #include "include/blockHandler.h"
 #include "include/Utils.h"
+#include "include/hitstop.h"
 namespace Hooks
 {
 	/* ng build: the call offsets below were measured on one game version. A write_call over anything but a CALL (E8) would corrupt the code, so a hook is
@@ -220,6 +221,7 @@ namespace Hooks
 		static void Update(RE::PlayerCharacter* a_this, float a_delta)
 		{
 			ValhallaCombat::GetSingleton()->update();
+			HitStop::Update();
 			_Update(a_this, a_delta);
 		}
 		static inline REL::Relocation<decltype(Update)> _Update;

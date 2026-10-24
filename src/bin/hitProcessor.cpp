@@ -88,6 +88,11 @@ void hitProcessor::precisionPosthitCallbackFunc(const PRECISION_API::PrecisionHi
 	if (!victim || Utils::Actor::isDead(victim)) {
 		return;
 	}
+	// A normal block of the player's catches a hit: the guard counter window opens (Elden Counter, built in). Blocks that Valhalla Combat handles itself
+	// (timed blocks) open it from blockHandler.
+	if (victim->IsPlayerRef() && blockHandler::EldenCounterCompatibility::on && a_hitData.flags.any(RE::HitData::Flag::kBlocked)) {
+		blockHandler::EldenCounterCompatibility::triggerCounter(victim);
+	}
 	static std::atomic<int> logged{ 0 };
 	if (logged.fetch_add(1) < 5) {
 		logger::info("Precision post-hit: {} hit {}, flags {:#x}, weapon {}", aggressor->GetName(), victim->GetName(), static_cast<std::uint32_t>(a_hitData.flags.underlying()),

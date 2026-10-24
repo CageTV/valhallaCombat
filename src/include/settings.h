@@ -141,6 +141,8 @@ public:
 	static inline float fTimedBlockSlowTime_Perfect = 0.3f;
 
 	static inline int iAltBlockKey = -1;
+	/*How long the guard counter window stays open after a block, in seconds.*/
+	static inline float fGuardCounterTime = 1.0f;
 #pragma endregion
 #pragma region StunSettings
 

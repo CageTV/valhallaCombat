@@ -113,12 +113,14 @@ namespace VCMenu
 	{ Kind::Text, "", "", "Nemesis NPC Counter Patch", "Not Installed", 0.0f, 0.0f, 0.0f, 0.0f, 0, 0, "", 0, 4, { 0, 0, 0 }, { 0, 0, 0 }, 1, Hidden::None },
 	{ Kind::Header, "", "", "Dual Wield Blocking/CGO", "", 0.0f, 0.0f, 0.0f, 0.0f, 0, 0, "", 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, 0, Hidden::None },
 	{ Kind::Key, "iAltBlockKey", "TimedBlocking", "Alternate Blocking Key", "Alternate blocking key you use for blocking by using either CGO or any dual wield blocking mods. Set this to the same key as CGO/DWB's settings if and only if you use those mods.", 0.0f, 0.0f, 0.0f, -1.0f, 0, 0, "", 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, 0, Hidden::None },
+	{ Kind::Header, "", "", "Guard counter (Elden Counter, built in)", "", 0.0f, 0.0f, 0.0f, 0.0f, 0, 0, "", 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, 0, Hidden::None },
+	{ Kind::Slider, "fGuardCounterTime", "GuardCounter", "Counter window after a block (s)", "How long after a block a power attack becomes a guard counter. Needs the Elden Counter plugin and animations from Nexus.", 0.2f, 3.0f, 0.05f, 1.0f, 2, 0, "", 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, 0, Hidden::None },
 	};
 
 	inline constexpr Page kPages[] = {
 		{ "Stamina", kPage0, 30 },
 		{ "Timed Block", kPage1, 21 },
 		{ "Stun&Execution", kPage2, 22 },
-		{ "Compatibility", kPage3, 17 },
+		{ "Compatibility", kPage3, 19 },
 	};
 }

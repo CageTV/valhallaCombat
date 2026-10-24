@@ -676,34 +676,64 @@ void blockHandler::EldenCounterCompatibility::attemptInit()
 	}
 }
 
-inline void blockHandler::EldenCounterCompatibility::triggerCounter(RE::Actor* a_actor)
+/* Opens (or refreshes) the guard counter window of the actor: the counter spell and the animation variable stay on for the configured time after the last
+block. This is the Elden Counter mod by dTry (Nexus 65579) built into Valhalla Combat; its animations and plugin are still a separate download. The spell
+and the variable are removed on the game thread, and a block inside the window extends it instead of leaving the first timer running. */
+void blockHandler::EldenCounterCompatibility::triggerCounter(RE::Actor* a_actor)
 {
-	if (a_actor->HasSpell(ec_triggerSpell)) {
+	if (!a_actor || !ec_triggerSpell) {
 		return;
 	}
-	a_actor->AddSpell(ec_triggerSpell);
-	std::jthread removeSpellThread(async_removeECTriggerSpell, a_actor);
-	removeSpellThread.detach();
-}
+	using clock = std::chrono::steady_clock;
+	static std::mutex                                     lock;
+	static std::unordered_map<RE::FormID, clock::time_point> expiry;
 
-void blockHandler::EldenCounterCompatibility::async_removeECTriggerSpell(RE::Actor* a_actor)
-{
-	std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(ec_Time * 1000)));
-	if (!a_actor) {
+	const auto id = a_actor->GetFormID();
+	const auto until = clock::now() + std::chrono::milliseconds(static_cast<int>(settings::fGuardCounterTime * 1000.0f));
+	bool       running = false;
+	{
+		std::lock_guard g(lock);
+		running = expiry.contains(id);
+		expiry[id] = until;
+	}
+	if (!a_actor->HasSpell(ec_triggerSpell)) {
+		a_actor->AddSpell(ec_triggerSpell);
+	}
+	a_actor->SetGraphVariableBool("Val_GuardCounter", true);
+	if (running) {
 		return;
 	}
-	a_actor->RemoveSpell(ec_triggerSpell);
-	
+	std::jthread([id]() {
+		for (;;) {
+			clock::time_point end;
+			{
+				std::lock_guard g(lock);
+				end = expiry[id];
+			}
+			if (clock::now() >= end) {
+				std::lock_guard g(lock);
+				if (clock::now() >= expiry[id]) {
+					expiry.erase(id);
+					break;
+				}
+				continue;
+			}
+			std::this_thread::sleep_until(end);
+		}
+		SKSE::GetTaskInterface()->AddTask([id]() {
+			if (const auto actor = RE::TESForm::LookupByID<RE::Actor>(id)) {
+				actor->RemoveSpell(ec_triggerSpell);
+				actor->SetGraphVariableBool("Val_GuardCounter", false);
+			}
+		});
+	}).detach();
 }
 
 void blockHandler::EldenCounterCompatibility::readSettings()
 {
-	logger::info("EldenCounter compatibility: reading settings...");
-	CSimpleIniA ini;
-#define SETTINGFILE_PATH "Data\\SKSE\\Plugins\\EldenCounter.ini"
-	ini.LoadFile(SETTINGFILE_PATH);
-	ec_Time = std::stof(ini.GetValue("General", "Time"));
-	logger::info("EldenCounter compatibilty: settings loaded.");
+	// The window length is settings::fGuardCounterTime ([GuardCounter] fGuardCounterTime in the settings file, set in the menu). The old EldenCounter.ini is
+	// not read any more: reading its value without checking crashed when the file was missing.
+	logger::info("EldenCounter compatibility: guard counter window {} s", settings::fGuardCounterTime);
 }
 
 /// <summary>

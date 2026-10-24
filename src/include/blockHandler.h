@@ -201,9 +201,6 @@ public: // plz don't look at this ugly compatiblity thing
 	private:
 		static inline RE::SpellItem* ec_triggerSpell = nullptr;
 
-		static inline float ec_Time = 1;
-
-		static inline void async_removeECTriggerSpell(RE::Actor* a_actor);
 		static void readSettings();
 	};
 

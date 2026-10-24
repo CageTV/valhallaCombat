@@ -8,6 +8,7 @@
 #include "ValhallaCombat.hpp"
 #include "include/settings.h"
 #include "include/menu.h"
+#include "include/hitstop.h"
 #include "include/Utils.h"
 #include "include/lib/ValhallaCombatAPI.h"
 #include "include/ModAPI.h"
@@ -49,6 +50,7 @@ void onDataLoaded()
 
 	settings::readSettings();
 	events::registerAllEventHandlers();
+	HitStop::Install();
 	data::loadData();
 	blockHandler::GetSingleton()->init();
 	blockHandler::EldenCounterCompatibility::attemptInit(); //todo: fix this jank
