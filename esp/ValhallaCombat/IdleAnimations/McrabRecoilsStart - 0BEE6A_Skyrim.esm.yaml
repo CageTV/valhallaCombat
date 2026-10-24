@@ -1,0 +1,10 @@
+FormKey: 0BEE6A:Skyrim.esm
+EditorID: McrabRecoilsStart
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+RelatedIdles:
+- 0BEE69:Skyrim.esm
+- Null
+AnimationGroupSection: 114

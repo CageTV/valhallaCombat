@@ -1,0 +1,10 @@
+FormKey: 0A5466:Skyrim.esm
+EditorID: SprigganRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\Spriggan\Behaviors\SprigganBehavior.hkx
+RelatedIdles:
+- 0A5465:Skyrim.esm
+- Null

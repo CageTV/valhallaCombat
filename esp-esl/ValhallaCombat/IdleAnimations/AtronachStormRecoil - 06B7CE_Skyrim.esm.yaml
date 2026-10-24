@@ -1,0 +1,10 @@
+FormKey: 06B7CE:Skyrim.esm
+EditorID: AtronachStormRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\AtronachStorm\Behaviors\AtronachStormBehavior.hkx
+RelatedIdles:
+- 06B7CD:Skyrim.esm
+- Null

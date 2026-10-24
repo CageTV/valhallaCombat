@@ -1,0 +1,7 @@
+FormKey: 0008BD:ValhallaCombat.esp
+EditorID: Val_2HWRieklingKillMovesSmash
+AnimationEvent: pa_KillMove2HWRieklingSmash
+RelatedIdles:
+- 0008B8:ValhallaCombat.esp
+- 0008BC:ValhallaCombat.esp
+AnimationGroupSection: 108

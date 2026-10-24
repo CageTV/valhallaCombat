@@ -1,0 +1,6 @@
+FormKey: 0008A8:ValhallaCombat.esp
+EditorID: Val_KillMoveBenthicLurkerRoot
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- 0008A4:ValhallaCombat.esp
+AnimationGroupSection: 116

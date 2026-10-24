@@ -1,0 +1,6 @@
+FormKey: 00087B:ValhallaCombat.esp
+EditorID: Val_KillMove2HWRoot
+RelatedIdles:
+- 00086B:ValhallaCombat.esp
+- 000876:ValhallaCombat.esp
+AnimationGroupSection: 116

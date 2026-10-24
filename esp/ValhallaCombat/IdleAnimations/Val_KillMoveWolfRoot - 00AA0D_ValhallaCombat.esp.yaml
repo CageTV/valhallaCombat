@@ -1,0 +1,6 @@
+FormKey: 00AA0D:ValhallaCombat.esp
+EditorID: Val_KillMoveWolfRoot
+RelatedIdles:
+- 00A9C7:ValhallaCombat.esp
+- 00AA07:ValhallaCombat.esp
+AnimationGroupSection: 85

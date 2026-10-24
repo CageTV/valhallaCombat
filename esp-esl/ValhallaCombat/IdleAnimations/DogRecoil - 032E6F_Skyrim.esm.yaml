@@ -1,0 +1,6 @@
+FormKey: 032E6F:Skyrim.esm
+EditorID: DogRecoil
+Filename: Actors\Canine\Behaviors\DogBehavior.hkx
+RelatedIdles:
+- 028CFD:Skyrim.esm
+- Null

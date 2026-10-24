@@ -1,0 +1,6 @@
+FormKey: 000820:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveVampireBrute
+RelatedIdles:
+- 00081F:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 111

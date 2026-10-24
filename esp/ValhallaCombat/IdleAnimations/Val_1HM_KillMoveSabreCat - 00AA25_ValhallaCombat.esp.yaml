@@ -1,0 +1,7 @@
+FormKey: 00AA25:ValhallaCombat.esp
+EditorID: Val_1HM_KillMoveSabreCat
+AnimationEvent: pa_KillMoveSabreCatShortA
+RelatedIdles:
+- 00A9C7:ValhallaCombat.esp
+- 00AA1D:ValhallaCombat.esp
+AnimationGroupSection: 2

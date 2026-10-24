@@ -1,0 +1,7 @@
+FormKey: 0877E6:Skyrim.esm
+EditorID: WitchlightRecoil
+Filename: Actors\Witchlight\Behaviors\WitchlightBehavior.hkx
+RelatedIdles:
+- 0877E5:Skyrim.esm
+- Null
+AnimationGroupSection: 115

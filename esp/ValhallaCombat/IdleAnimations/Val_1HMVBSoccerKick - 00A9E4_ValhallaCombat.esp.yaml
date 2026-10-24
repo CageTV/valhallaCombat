@@ -1,0 +1,7 @@
+FormKey: 00A9E4:ValhallaCombat.esp
+EditorID: Val_1HMVBSoccerKick
+AnimationEvent: pa_KillMove1HMVBSoccerKick
+RelatedIdles:
+- 00A9E2:ValhallaCombat.esp
+- 00A9E3:ValhallaCombat.esp
+AnimationGroupSection: 110

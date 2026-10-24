@@ -1,0 +1,7 @@
+FormKey: 00087F:ValhallaCombat.esp
+EditorID: Val_KillMove2HWChopKick
+AnimationEvent: pa_KillMove2HWChopKick
+RelatedIdles:
+- 00087B:ValhallaCombat.esp
+- 00087E:ValhallaCombat.esp
+AnimationGroupSection: 117

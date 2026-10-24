@@ -1,0 +1,10 @@
+FormKey: 035336:Skyrim.esm
+EditorID: DraugrRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\Draugr\Behaviors\DraugrBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null

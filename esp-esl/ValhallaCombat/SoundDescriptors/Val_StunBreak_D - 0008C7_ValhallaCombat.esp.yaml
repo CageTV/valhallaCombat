@@ -1,0 +1,9 @@
+FormKey: 0008C7:ValhallaCombat.esp
+EditorID: Val_StunBreak_D
+Type: Standard
+SoundFiles:
+- data\sound\fx\ValhallaCombat\stunBroken.wav
+OutputModel: 10E425:Skyrim.esm
+LoopAndRumble: {}
+PercentFrequencyVariance: 4
+Priority: 128

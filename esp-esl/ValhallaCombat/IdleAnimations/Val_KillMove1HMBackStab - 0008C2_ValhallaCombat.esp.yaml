@@ -1,0 +1,7 @@
+FormKey: 0008C2:ValhallaCombat.esp
+EditorID: Val_KillMove1HMBackStab
+AnimationEvent: pa_KillMove1HMBackStab
+RelatedIdles:
+- 0008BE:ValhallaCombat.esp
+- 0008C1:ValhallaCombat.esp
+AnimationGroupSection: 116

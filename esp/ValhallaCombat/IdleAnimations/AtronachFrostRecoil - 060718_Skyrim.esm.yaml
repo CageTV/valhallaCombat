@@ -1,0 +1,11 @@
+FormKey: 060718:Skyrim.esm
+EditorID: AtronachFrostRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\AtronachFrost\Behaviors\AtronachFrostBehavior.hkx
+RelatedIdles:
+- 060717:Skyrim.esm
+- Null
+AnimationGroupSection: 10

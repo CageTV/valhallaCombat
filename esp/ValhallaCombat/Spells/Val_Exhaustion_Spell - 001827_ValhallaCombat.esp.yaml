@@ -1,0 +1,14 @@
+FormKey: 001827:ValhallaCombat.esp
+EditorID: Val_Exhaustion_Spell
+Name:
+  TargetLanguage: English
+  Value: Exhaustion
+MenuDisplayObject: 10A046:Skyrim.esm
+EquipmentType: 013F44:Skyrim.esm
+Description:
+  TargetLanguage: English
+  Value: Melee attacks deal half damage.
+Type: Ability
+Effects:
+- BaseEffect: 001828:ValhallaCombat.esp
+  Data: {}

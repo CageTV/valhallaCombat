@@ -1,0 +1,7 @@
+FormKey: 0008C0:ValhallaCombat.esp
+EditorID: Val_KillMove2HWHackFromBehind
+AnimationEvent: pa_KillMove2HWHackFromBehind
+RelatedIdles:
+- 0008BE:ValhallaCombat.esp
+- 0008BF:ValhallaCombat.esp
+AnimationGroupSection: 116

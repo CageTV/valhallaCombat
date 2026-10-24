@@ -1,0 +1,6 @@
+FormKey: 0008B8:ValhallaCombat.esp
+EditorID: Val_KillMoveRieklingRoot
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- 0008B2:ValhallaCombat.esp
+AnimationGroupSection: 116

@@ -1,0 +1,6 @@
+FormKey: 000894:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveStabUpFace
+AnimationEvent: pa_KillMove1HMStabUpFace
+RelatedIdles:
+- 00088E:ValhallaCombat.esp
+- 000893:ValhallaCombat.esp

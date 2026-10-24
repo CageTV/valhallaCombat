@@ -1,0 +1,7 @@
+FormKey: 00AA1A:ValhallaCombat.esp
+EditorID: Val_1HMGiantKillMoveB
+AnimationEvent: pa_KillMove1HMGiantB
+RelatedIdles:
+- 00AA17:ValhallaCombat.esp
+- 00AA19:ValhallaCombat.esp
+AnimationGroupSection: 108

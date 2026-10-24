@@ -1,0 +1,10 @@
+FormKey: 060C2D:ValhallaCombat.esp
+VersionControl: 11417
+EditorID: Val_Parry_Weapon_Perfect_D
+Type: Standard
+SoundFiles:
+- data\sound\fx\ValhallaCombat\parry_Weapon_Perfect.wav
+OutputModel: 10E425:Skyrim.esm
+LoopAndRumble: {}
+PercentFrequencyVariance: 5
+Priority: 1

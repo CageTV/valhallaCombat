@@ -1,0 +1,7 @@
+FormKey: 000886:ValhallaCombat.esp
+EditorID: Val_KillMove2HMUnderSwingLeg
+AnimationEvent: pa_KillMove2HMUnderSwingLeg
+RelatedIdles:
+- 000881:ValhallaCombat.esp
+- 000885:ValhallaCombat.esp
+AnimationGroupSection: 117

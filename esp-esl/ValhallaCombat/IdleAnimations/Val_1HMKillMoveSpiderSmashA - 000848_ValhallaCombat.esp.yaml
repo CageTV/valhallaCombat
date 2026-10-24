@@ -1,0 +1,7 @@
+FormKey: 000848:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveSpiderSmashA
+AnimationEvent: pa_KillMove1HMSpiderSmashA
+RelatedIdles:
+- 000846:ValhallaCombat.esp
+- 000847:ValhallaCombat.esp
+AnimationGroupSection: 111

@@ -1,0 +1,7 @@
+FormKey: 00088D:ValhallaCombat.esp
+EditorID: Val_KillMoveDualWieldDualSlash
+AnimationEvent: pa_KillMoveDWDualSlash
+RelatedIdles:
+- 000888:ValhallaCombat.esp
+- 00088C:ValhallaCombat.esp
+AnimationGroupSection: 97

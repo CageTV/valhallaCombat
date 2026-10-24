@@ -1,0 +1,6 @@
+FormKey: 08AF3D:Skyrim.esm
+EditorID: BearRecoil
+Filename: Actors\Bear\Behaviors\BearBehavior.hkx
+RelatedIdles:
+- 08AF3C:Skyrim.esm
+- Null

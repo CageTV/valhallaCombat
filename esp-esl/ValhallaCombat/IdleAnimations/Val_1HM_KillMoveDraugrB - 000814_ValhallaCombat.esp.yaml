@@ -1,0 +1,7 @@
+FormKey: 000814:ValhallaCombat.esp
+EditorID: Val_1HM_KillMoveDraugrB
+AnimationEvent: pa_KillMoveDraugrB
+RelatedIdles:
+- 00080E:ValhallaCombat.esp
+- 000813:ValhallaCombat.esp
+AnimationGroupSection: 47

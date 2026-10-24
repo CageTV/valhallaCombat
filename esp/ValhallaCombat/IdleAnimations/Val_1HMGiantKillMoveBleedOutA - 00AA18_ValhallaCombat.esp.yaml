@@ -1,0 +1,7 @@
+FormKey: 00AA18:ValhallaCombat.esp
+EditorID: Val_1HMGiantKillMoveBleedOutA
+AnimationEvent: pa_KillMove1HMGiantBleedOutA
+RelatedIdles:
+- 00AA17:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

@@ -1,0 +1,6 @@
+FormKey: 00AA59:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveRepeatStabDowns
+AnimationEvent: pa_KillMove1HMRepeatStabDown
+RelatedIdles:
+- 00AA51:ValhallaCombat.esp
+- 00AA58:ValhallaCombat.esp

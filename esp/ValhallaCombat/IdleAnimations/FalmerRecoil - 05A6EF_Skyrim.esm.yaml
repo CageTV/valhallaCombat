@@ -1,0 +1,10 @@
+FormKey: 05A6EF:Skyrim.esm
+EditorID: FalmerRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\Falmer\Behaviors\FalmerBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null

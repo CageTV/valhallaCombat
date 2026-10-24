@@ -1,0 +1,7 @@
+FormKey: 024FC9:Dragonborn.esm
+EditorID: NetchRecoil
+Filename: Actors\DLC02\Netch\Behaviors\NetchBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null
+AnimationGroupSection: 47

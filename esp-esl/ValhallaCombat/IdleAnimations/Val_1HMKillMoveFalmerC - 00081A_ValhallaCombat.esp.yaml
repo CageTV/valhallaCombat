@@ -1,0 +1,7 @@
+FormKey: 00081A:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveFalmerC
+AnimationEvent: pa_KillMove1HMFalmerC
+RelatedIdles:
+- 000817:ValhallaCombat.esp
+- 000819:ValhallaCombat.esp
+AnimationGroupSection: 69

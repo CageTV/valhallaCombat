@@ -1,0 +1,20 @@
+FormKey: 0008AE:ValhallaCombat.esp
+EditorID: Val_1HMBoarKillMovesStab
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Flags:
+  - OR
+  Data:
+    MutagenObjectType: GetEquippedItemTypeConditionData
+    ItemSource: Right
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetEquippedItemTypeConditionData
+    ItemSource: Right
+  ComparisonValue: 2
+AnimationEvent: pa_KillMove1HMBoarStab
+RelatedIdles:
+- 0008AD:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 111

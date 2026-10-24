@@ -1,0 +1,21 @@
+FormKey: 0008D3:ValhallaCombat.esp
+MajorRecordFlagsRaw: 131072
+EditorID: Val_LightBlockSparksBig
+SkyrimMajorRecordFlags:
+- Dangerous_OffLimits_InteriorCell
+Time: -1
+Radius: 384
+Color: '#00BC7443'
+Flags:
+- Dynamic
+- Flicker
+- PortalStrict
+FalloffExponent: 1
+FOV: 90
+NearClip: 6.5853
+FlickerPeriod: 0.3333
+FlickerIntensityAmplitude: 0.5
+FlickerMovementAmplitude: 16
+FadeValue: 0.3
+MajorFlags:
+- PortalStrict

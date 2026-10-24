@@ -1,0 +1,6 @@
+FormKey: 0008B3:ValhallaCombat.esp
+EditorID: Val_1HMScribKillMoves
+RelatedIdles:
+- 0008B2:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

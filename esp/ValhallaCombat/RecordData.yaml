@@ -1,0 +1,25 @@
+SpriggitSource:
+  PackageName: Spriggit.Yaml.Skyrim
+  Version: 0.41
+ModKey: ValhallaCombat.esp
+GameRelease: SkyrimSE
+ModHeader:
+  Stats:
+    Version: 1.7
+  Author: DEFAULT
+  MasterReferences:
+  - Master: Skyrim.esm
+    FileSize: 0
+  - Master: Update.esm
+    FileSize: 0
+  - Master: Dawnguard.esm
+    FileSize: 0
+  - Master: HearthFires.esm
+    FileSize: 0
+  - Master: Dragonborn.esm
+    FileSize: 0
+  - Master: SkyUI_SE.esp
+    FileSize: 0
+  - Master: MCMHelper.esp
+    FileSize: 0
+  INTV: 1

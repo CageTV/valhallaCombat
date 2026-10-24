@@ -76,22 +76,8 @@ void settings::updateGameSettings() {
 		bVal_TrueHUDAPI_SpecialMeter_Acq->SetBool(facts::TrueHudAPI_HasSpecialBarControl);
 	}
 
-	// The MCM's "TrueHUD API: FOUND/NOT FOUND" and "Special Meter: GRANTED/NOT GRANTED"
-	// display is driven by two GlobalVariables in ValhallaCombat.esp (form 0x56A25 =
-	// API obtained, 0x56A23 = special-meter granted), NOT by the game settings above --
-	// the config.json status controls read those globals via hiddenToggles. The DLL
-	// previously only ever set the game settings, so the ESP globals were never updated
-	// and the MCM permanently showed NOT FOUND / NOT GRANTED even when the API was
-	// connected. Set the globals here so the display reflects the real state.
-	if (auto dataHandler = RE::TESDataHandler::GetSingleton()) {
-		const bool bApiObtained = ValhallaCombat::GetSingleton()->ersh_TrueHUD != nullptr;
-		if (auto gvApiObtained = dataHandler->LookupForm<RE::TESGlobal>(0x56A25, "ValhallaCombat.esp")) {
-			gvApiObtained->value = bApiObtained ? 1.0f : 0.0f;
-		}
-		if (auto gvSpecialMeter = dataHandler->LookupForm<RE::TESGlobal>(0x56A23, "ValhallaCombat.esp")) {
-			gvSpecialMeter->value = facts::TrueHudAPI_HasSpecialBarControl ? 1.0f : 0.0f;
-		}
-	}
+	// (The TrueHUD / special meter status used to be written into two globals of the plugin for the MCM menu. The SKSE Menu Framework page reads
+	// settings::facts directly, and the light plugin no longer needs those globals.)
 
 	logger::info("...done");
 }

@@ -1,0 +1,11 @@
+FormKey: 0008D1:ValhallaCombat.esp
+EditorID: Val_SparksBlockRing
+Model:
+  File: ValhallaCombat\SparksFlareRings.nif
+Light: 0008D3:ValhallaCombat.esp
+Force: 1
+Radius: 140
+VerticalOffsetMult: 100
+Flags:
+- 0x1
+- IgnoreImageSpaceSwap

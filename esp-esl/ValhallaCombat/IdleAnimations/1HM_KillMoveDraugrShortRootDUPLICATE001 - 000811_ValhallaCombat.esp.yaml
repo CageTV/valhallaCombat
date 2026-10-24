@@ -1,0 +1,18 @@
+FormKey: 000811:ValhallaCombat.esp
+EditorID: 1HM_KillMoveDraugrShortRootDUPLICATE001
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Flags:
+  - OR
+  Data:
+    MutagenObjectType: GetEquippedItemTypeConditionData
+    ItemSource: Right
+  ComparisonValue: 3
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetEquippedItemTypeConditionData
+    ItemSource: Right
+  ComparisonValue: 4
+RelatedIdles:
+- 00080E:ValhallaCombat.esp
+- 000810:ValhallaCombat.esp

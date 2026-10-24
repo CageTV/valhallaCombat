@@ -1,0 +1,7 @@
+FormKey: 061080:Skyrim.esm
+EditorID: chaurusRecoilsStart
+Filename: Actors\Chaurus\Behaviors\ChaurusBehavior.hkx
+RelatedIdles:
+- 06107F:Skyrim.esm
+- Null
+AnimationGroupSection: 32

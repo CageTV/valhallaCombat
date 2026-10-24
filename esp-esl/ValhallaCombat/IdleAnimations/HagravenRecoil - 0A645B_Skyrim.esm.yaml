@@ -1,0 +1,10 @@
+FormKey: 0A645B:Skyrim.esm
+EditorID: HagravenRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\Hagraven\Behaviors\HavgravenBehavior.hkx
+RelatedIdles:
+- 0A645A:Skyrim.esm
+- Null

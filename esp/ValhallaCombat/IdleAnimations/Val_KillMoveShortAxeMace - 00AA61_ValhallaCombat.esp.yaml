@@ -1,0 +1,6 @@
+FormKey: 00AA61:ValhallaCombat.esp
+EditorID: Val_KillMoveShortAxeMace
+RelatedIdles:
+- 00AA2E:ValhallaCombat.esp
+- 00AA51:ValhallaCombat.esp
+AnimationGroupSection: 58

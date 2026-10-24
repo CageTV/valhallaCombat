@@ -1,0 +1,6 @@
+FormKey: 00084F:ValhallaCombat.esp
+EditorID: Val_2HMWolfKillMoves
+RelatedIdles:
+- 00084B:ValhallaCombat.esp
+- 00084C:ValhallaCombat.esp
+AnimationGroupSection: 1

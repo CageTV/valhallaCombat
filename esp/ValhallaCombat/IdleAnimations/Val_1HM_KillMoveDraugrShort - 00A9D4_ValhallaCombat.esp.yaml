@@ -1,0 +1,6 @@
+FormKey: 00A9D4:ValhallaCombat.esp
+EditorID: Val_1HM_KillMoveDraugrShort
+AnimationEvent: pa_KillMoveDraugrShortA
+RelatedIdles:
+- 00A9D3:ValhallaCombat.esp
+- Null

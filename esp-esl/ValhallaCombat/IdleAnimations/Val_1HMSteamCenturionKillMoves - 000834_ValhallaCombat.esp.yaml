@@ -1,0 +1,6 @@
+FormKey: 000834:ValhallaCombat.esp
+EditorID: Val_1HMSteamCenturionKillMoves
+RelatedIdles:
+- 000833:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

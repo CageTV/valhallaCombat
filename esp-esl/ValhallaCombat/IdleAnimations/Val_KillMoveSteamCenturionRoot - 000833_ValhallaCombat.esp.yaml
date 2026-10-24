@@ -1,0 +1,6 @@
+FormKey: 000833:ValhallaCombat.esp
+EditorID: Val_KillMoveSteamCenturionRoot
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- 00082B:ValhallaCombat.esp
+AnimationGroupSection: 116

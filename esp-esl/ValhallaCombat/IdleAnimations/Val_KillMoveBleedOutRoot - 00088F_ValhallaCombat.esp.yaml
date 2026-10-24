@@ -1,0 +1,6 @@
+FormKey: 00088F:ValhallaCombat.esp
+EditorID: Val_KillMoveBleedOutRoot
+RelatedIdles:
+- 00088E:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 117

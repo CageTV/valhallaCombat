@@ -1,0 +1,7 @@
+FormKey: 00A9E3:ValhallaCombat.esp
+EditorID: Val_1HMVBSlowBackStab
+AnimationEvent: pa_KillMove1HMVBSlowBackStab
+RelatedIdles:
+- 00A9E2:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 110

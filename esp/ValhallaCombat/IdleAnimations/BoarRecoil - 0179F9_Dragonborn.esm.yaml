@@ -1,0 +1,7 @@
+FormKey: 0179F9:Dragonborn.esm
+EditorID: BoarRecoil
+Filename: Actors\DLC02\BoarRiekling\Behaviors\BoarBehavior.hkx
+RelatedIdles:
+- 0179F8:Dragonborn.esm
+- Null
+AnimationGroupSection: 32

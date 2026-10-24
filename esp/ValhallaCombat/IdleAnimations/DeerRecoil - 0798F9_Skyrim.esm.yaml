@@ -1,0 +1,7 @@
+FormKey: 0798F9:Skyrim.esm
+EditorID: DeerRecoil
+Filename: Actors\Deer\Behaviors\DeerBehavior.hkx
+RelatedIdles:
+- 0798F8:Skyrim.esm
+- Null
+AnimationGroupSection: 115

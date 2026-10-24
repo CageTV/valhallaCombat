@@ -1,0 +1,7 @@
+FormKey: 00AA6D:ValhallaCombat.esp
+EditorID: Val_2HMBenthicLurkerKillMovesSlash
+AnimationEvent: pa_KillMove2HMBenthicLurkerStab
+RelatedIdles:
+- 00AA6B:ValhallaCombat.esp
+- 00AA6C:ValhallaCombat.esp
+AnimationGroupSection: 69

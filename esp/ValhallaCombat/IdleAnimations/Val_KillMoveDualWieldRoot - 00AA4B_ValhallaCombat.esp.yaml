@@ -1,0 +1,6 @@
+FormKey: 00AA4B:ValhallaCombat.esp
+EditorID: Val_KillMoveDualWieldRoot
+RelatedIdles:
+- 00AA2E:ValhallaCombat.esp
+- 00AA44:ValhallaCombat.esp
+AnimationGroupSection: 116

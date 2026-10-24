@@ -1,0 +1,13 @@
+FormKey: 00080B:ValhallaCombat.esp
+EditorID: Val_2HWDragonKillMoveRoot
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetIsRaceConditionData
+    RunOnType: Target
+    Race: 012E82:Skyrim.esm
+  ComparisonValue: 1
+RelatedIdles:
+- 000806:ValhallaCombat.esp
+- 00080A:ValhallaCombat.esp
+AnimationGroupSection: 41

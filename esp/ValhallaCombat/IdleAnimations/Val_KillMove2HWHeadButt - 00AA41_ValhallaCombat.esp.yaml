@@ -1,0 +1,7 @@
+FormKey: 00AA41:ValhallaCombat.esp
+EditorID: Val_KillMove2HWHeadButt
+AnimationEvent: pa_KillMove2HWHeadButt
+RelatedIdles:
+- 00AA3E:ValhallaCombat.esp
+- 00AA40:ValhallaCombat.esp
+AnimationGroupSection: 117

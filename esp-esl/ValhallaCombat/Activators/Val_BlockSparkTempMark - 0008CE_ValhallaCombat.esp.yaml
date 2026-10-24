@@ -1,0 +1,7 @@
+FormKey: 0008CE:ValhallaCombat.esp
+MajorRecordFlagsRaw: 8388608
+EditorID: Val_BlockSparkTempMark
+SkyrimMajorRecordFlags:
+- 0x800000
+MajorFlags:
+- IsMarker

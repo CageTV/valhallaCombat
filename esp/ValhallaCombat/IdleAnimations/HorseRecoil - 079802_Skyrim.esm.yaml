@@ -1,0 +1,6 @@
+FormKey: 079802:Skyrim.esm
+EditorID: HorseRecoil
+Filename: Actors\Horse\Behaviors\HorseBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null

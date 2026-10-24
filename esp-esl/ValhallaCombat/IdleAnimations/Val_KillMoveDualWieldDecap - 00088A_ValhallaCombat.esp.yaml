@@ -1,0 +1,7 @@
+FormKey: 00088A:ValhallaCombat.esp
+EditorID: Val_KillMoveDualWieldDecap
+AnimationEvent: pa_KillMoveDWDecap
+RelatedIdles:
+- 000888:ValhallaCombat.esp
+- 000889:ValhallaCombat.esp
+AnimationGroupSection: 108

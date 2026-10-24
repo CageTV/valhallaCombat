@@ -1,0 +1,10 @@
+FormKey: 013AF9:Skyrim.esm
+EditorID: Recoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\Character\Behaviors\0_Master.hkx
+RelatedIdles:
+- 013AF8:Skyrim.esm
+- Null

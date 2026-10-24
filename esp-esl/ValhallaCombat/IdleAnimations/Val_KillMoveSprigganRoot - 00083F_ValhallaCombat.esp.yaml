@@ -1,0 +1,6 @@
+FormKey: 00083F:ValhallaCombat.esp
+EditorID: Val_KillMoveSprigganRoot
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- 000839:ValhallaCombat.esp
+AnimationGroupSection: 116

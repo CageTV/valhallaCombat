@@ -1,0 +1,7 @@
+FormKey: 000823:ValhallaCombat.esp
+EditorID: Val_2HMKillMoveVampireBrute
+AnimationEvent: pa_KillMove2HMVBBlockAndSlash
+RelatedIdles:
+- 00081F:ValhallaCombat.esp
+- 000820:ValhallaCombat.esp
+AnimationGroupSection: 110

@@ -1,0 +1,13 @@
+FormKey: 000808:ValhallaCombat.esp
+EditorID: Val_1HMSword_KillMoveDragonRodeoStabShort
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetIsRaceConditionData
+    RunOnType: Target
+    Race: 012E82:Skyrim.esm
+  ComparisonValue: 1
+AnimationEvent: pa_KillMove1HMDragonRodeoStabShort
+RelatedIdles:
+- 000807:ValhallaCombat.esp
+- Null

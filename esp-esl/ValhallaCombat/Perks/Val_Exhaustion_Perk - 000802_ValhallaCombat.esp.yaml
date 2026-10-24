@@ -1,0 +1,23 @@
+FormKey: 000802:ValhallaCombat.esp
+EditorID: Val_Exhaustion_Perk
+Name:
+  TargetLanguage: English
+  Value: Exhaustion
+Description:
+  TargetLanguage: English
+  Value: ''
+NumRanks: 1
+Playable: True
+Effects:
+- MutagenObjectType: PerkAbilityEffect
+  Ability: 000800:ValhallaCombat.esp
+- MutagenObjectType: PerkEntryPointModifyValue
+  EntryPoint: ModAttackDamage
+  PerkConditionTabCount: 3
+  Modification: Multiply
+  Value: 0.5
+- MutagenObjectType: PerkEntryPointModifyValue
+  EntryPoint: ModPowerAttackDamage
+  PerkConditionTabCount: 3
+  Modification: Multiply
+  Value: 0.5

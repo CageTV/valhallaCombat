@@ -1,0 +1,6 @@
+FormKey: 03024D:Skyrim.esm
+EditorID: skeeverRecoil
+Filename: Actors\Skeever\Behaviors\SkeeverBehavior.hkx
+RelatedIdles:
+- 03024A:Skyrim.esm
+- Null

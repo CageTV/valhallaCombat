@@ -1,0 +1,11 @@
+FormKey: 0008CF:ValhallaCombat.esp
+EditorID: Val_BlockSpark
+Model:
+  File: ValhallaCombat\Sparks.nif
+Light: 0008D2:ValhallaCombat.esp
+Force: 1
+Radius: 140
+VerticalOffsetMult: 100
+Flags:
+- 0x1
+- IgnoreImageSpaceSwap

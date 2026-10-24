@@ -1,0 +1,7 @@
+FormKey: 00A9EC:ValhallaCombat.esp
+EditorID: Val_2HWKillMoveChaurusFlyer
+AnimationEvent: pa_KillMove2HWChaurusFlyerPullDownSlash
+RelatedIdles:
+- 00A9E7:ValhallaCombat.esp
+- 00A9EB:ValhallaCombat.esp
+AnimationGroupSection: 111

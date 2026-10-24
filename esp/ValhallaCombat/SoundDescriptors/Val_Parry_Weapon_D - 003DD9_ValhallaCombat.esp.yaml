@@ -1,0 +1,12 @@
+FormKey: 003DD9:ValhallaCombat.esp
+EditorID: Val_Parry_Weapon_D
+Type: Standard
+SoundFiles:
+- data\sound\fx\ValhallaCombat\parry_Weapon_1.wav
+- data\sound\fx\ValhallaCombat\parry_Weapon_2.wav
+- data\sound\fx\ValhallaCombat\parry_Weapon_3.wav
+- data\sound\fx\ValhallaCombat\parry_Weapon_4.wav
+OutputModel: 10E425:Skyrim.esm
+LoopAndRumble: {}
+PercentFrequencyVariance: 5
+Priority: 1

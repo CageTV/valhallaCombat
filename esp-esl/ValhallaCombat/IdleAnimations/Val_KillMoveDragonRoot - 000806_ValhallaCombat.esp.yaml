@@ -1,0 +1,24 @@
+FormKey: 000806:ValhallaCombat.esp
+EditorID: Val_KillMoveDragonRoot
+Conditions:
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: GetEquippedItemTypeConditionData
+    ItemSource: Right
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetIsRaceConditionData
+    RunOnType: Target
+    Race: 012E82:Skyrim.esm
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: GetDeadConditionData
+    RunOnType: Target
+  ComparisonValue: 1
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 47

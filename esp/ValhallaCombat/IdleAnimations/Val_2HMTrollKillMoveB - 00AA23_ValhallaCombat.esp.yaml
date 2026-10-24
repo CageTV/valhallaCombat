@@ -1,0 +1,7 @@
+FormKey: 00AA23:ValhallaCombat.esp
+EditorID: Val_2HMTrollKillMoveB
+AnimationEvent: pa_KillMove2HMTrollB
+RelatedIdles:
+- 00AA21:ValhallaCombat.esp
+- 00AA22:ValhallaCombat.esp
+AnimationGroupSection: 67

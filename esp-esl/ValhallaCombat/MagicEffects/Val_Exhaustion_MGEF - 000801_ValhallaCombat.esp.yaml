@@ -1,0 +1,19 @@
+FormKey: 000801:ValhallaCombat.esp
+EditorID: Val_Exhaustion_MGEF
+Name:
+  TargetLanguage: English
+  Value: Exhaustion
+MenuDisplayObject: 10A046:Skyrim.esm
+Flags:
+- Detrimental
+- NoDuration
+- NoRecast
+Archetype:
+  MutagenObjectType: MagicEffectArchetype
+  ActorValue: Health
+DualCastScale: 1
+CastingSoundLevel: Normal
+Sounds: []
+Description:
+  TargetLanguage: English
+  Value: Melee attacks deal half damage.

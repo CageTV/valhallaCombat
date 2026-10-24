@@ -1,0 +1,7 @@
+FormKey: 08EE31:Skyrim.esm
+EditorID: WispActionRecoil
+Filename: Actors\Wisp\Behaviors\WispBehavior.hkx
+RelatedIdles:
+- 08EE30:Skyrim.esm
+- Null
+AnimationGroupSection: 115

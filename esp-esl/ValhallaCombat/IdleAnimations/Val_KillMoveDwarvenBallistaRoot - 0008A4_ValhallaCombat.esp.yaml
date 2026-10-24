@@ -1,0 +1,6 @@
+FormKey: 0008A4:ValhallaCombat.esp
+EditorID: Val_KillMoveDwarvenBallistaRoot
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- 00086B:ValhallaCombat.esp
+AnimationGroupSection: 116

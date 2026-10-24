@@ -1,0 +1,7 @@
+FormKey: 095A03:Skyrim.esm
+EditorID: HorkerRecoil
+Filename: Actors\Horker\Behaviors\HorkerBehavior.hkx
+RelatedIdles:
+- 095A02:Skyrim.esm
+- Null
+AnimationGroupSection: 101

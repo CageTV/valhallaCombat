@@ -1,0 +1,6 @@
+FormKey: 00AA5B:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveD
+AnimationEvent: pa_KillMoveD
+RelatedIdles:
+- 00AA51:ValhallaCombat.esp
+- 00AA5A:ValhallaCombat.esp

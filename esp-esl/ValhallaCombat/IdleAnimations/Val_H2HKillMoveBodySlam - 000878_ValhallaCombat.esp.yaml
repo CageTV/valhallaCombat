@@ -1,0 +1,7 @@
+FormKey: 000878:ValhallaCombat.esp
+EditorID: Val_H2HKillMoveBodySlam
+AnimationEvent: pa_KillMoveH2HBodySlam
+RelatedIdles:
+- 000876:ValhallaCombat.esp
+- 000877:ValhallaCombat.esp
+AnimationGroupSection: 108

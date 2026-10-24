@@ -1,0 +1,7 @@
+FormKey: 0008BA:ValhallaCombat.esp
+EditorID: Val_1HMKillRieklingKillMovesStab
+AnimationEvent: pa_KillMove1HMRieklingFaceStab
+RelatedIdles:
+- 0008B9:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 111

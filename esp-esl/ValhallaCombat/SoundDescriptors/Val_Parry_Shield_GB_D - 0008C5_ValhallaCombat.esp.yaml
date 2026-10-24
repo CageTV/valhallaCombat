@@ -1,0 +1,9 @@
+FormKey: 0008C5:ValhallaCombat.esp
+EditorID: Val_Parry_Shield_GB_D
+Type: Standard
+SoundFiles:
+- data\sound\fx\ValhallaCombat\parry_Shield_GuardBreak.wav
+OutputModel: 10E425:Skyrim.esm
+LoopAndRumble: {}
+PercentFrequencyVariance: 5
+Priority: 1

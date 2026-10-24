@@ -1,0 +1,6 @@
+FormKey: 00AA08:ValhallaCombat.esp
+EditorID: Val_1HMSpiderKillMoves
+RelatedIdles:
+- 00AA07:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

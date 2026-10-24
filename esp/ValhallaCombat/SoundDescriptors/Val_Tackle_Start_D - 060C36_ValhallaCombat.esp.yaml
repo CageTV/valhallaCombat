@@ -1,0 +1,9 @@
+FormKey: 060C36:ValhallaCombat.esp
+EditorID: Val_Tackle_Start_D
+Type: Standard
+SoundFiles:
+- data\sound\fx\ValhallaCombat\tackle_start.wav
+OutputModel: 10E425:Skyrim.esm
+LoopAndRumble: {}
+PercentFrequencyVariance: 5
+Priority: 1

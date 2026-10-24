@@ -1,0 +1,7 @@
+FormKey: 00AA78:ValhallaCombat.esp
+EditorID: Val_1HMScribKillMovesSlash
+AnimationEvent: pa_KillMove1HMScribSlash
+RelatedIdles:
+- 00AA76:ValhallaCombat.esp
+- 00AA77:ValhallaCombat.esp
+AnimationGroupSection: 77

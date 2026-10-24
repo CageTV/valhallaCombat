@@ -1,0 +1,7 @@
+FormKey: 005920:Dawnguard.esm
+EditorID: ChaurusFlyerRecoil
+Filename: Actors\DLC01\ChaurusFlyer\Behaviors\CHaurusFlyerBehavior.hkx
+RelatedIdles:
+- 00591F:Dawnguard.esm
+- Null
+AnimationGroupSection: 114

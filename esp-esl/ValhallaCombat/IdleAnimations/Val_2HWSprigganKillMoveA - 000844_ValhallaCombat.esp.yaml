@@ -1,0 +1,7 @@
+FormKey: 000844:ValhallaCombat.esp
+EditorID: Val_2HWSprigganKillMoveA
+AnimationEvent: pa_KillMove2HWSprigganA
+RelatedIdles:
+- 00083F:ValhallaCombat.esp
+- 000843:ValhallaCombat.esp
+AnimationGroupSection: 108

@@ -1,0 +1,10 @@
+FormKey: 03633B:Skyrim.esm
+EditorID: TrollRecoilRoot
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\Troll\Behaviors\TrollBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null

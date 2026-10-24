@@ -1,0 +1,6 @@
+FormKey: 00AA56:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveShieldBashAttack
+AnimationEvent: pa_KillMoveShieldBashSlash
+RelatedIdles:
+- 00AA51:ValhallaCombat.esp
+- 00AA55:ValhallaCombat.esp

@@ -1,0 +1,7 @@
+FormKey: 0008B1:ValhallaCombat.esp
+EditorID: Val_2HWBoarKillMovesSmash
+AnimationEvent: pa_KillMove2HWBoarSmash
+RelatedIdles:
+- 0008AC:ValhallaCombat.esp
+- 0008B0:ValhallaCombat.esp
+AnimationGroupSection: 108

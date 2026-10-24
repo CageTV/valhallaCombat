@@ -1,0 +1,7 @@
+FormKey: 000891:ValhallaCombat.esp
+EditorID: Val_KillingBlowBleedOut
+AnimationEvent: pa_KillingBlow
+RelatedIdles:
+- 00088F:ValhallaCombat.esp
+- 000890:ValhallaCombat.esp
+AnimationGroupSection: 2

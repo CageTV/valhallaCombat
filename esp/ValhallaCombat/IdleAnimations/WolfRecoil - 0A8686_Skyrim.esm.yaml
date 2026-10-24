@@ -1,0 +1,7 @@
+FormKey: 0A8686:Skyrim.esm
+EditorID: WolfRecoil
+Filename: Actors\Canine\Behaviors Wolf\WolfBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null
+AnimationGroupSection: 66

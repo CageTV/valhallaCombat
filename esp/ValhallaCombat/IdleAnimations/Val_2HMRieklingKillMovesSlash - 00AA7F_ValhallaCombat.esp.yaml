@@ -1,0 +1,7 @@
+FormKey: 00AA7F:ValhallaCombat.esp
+EditorID: Val_2HMRieklingKillMovesSlash
+AnimationEvent: pa_KillMove2HMRieklingSlash
+RelatedIdles:
+- 00AA7B:ValhallaCombat.esp
+- 00AA7C:ValhallaCombat.esp
+AnimationGroupSection: 69

@@ -1,0 +1,6 @@
+FormKey: 000895:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveStabDownChest
+AnimationEvent: pa_KillMove1HMStabDownChest
+RelatedIdles:
+- 00088E:ValhallaCombat.esp
+- 000894:ValhallaCombat.esp

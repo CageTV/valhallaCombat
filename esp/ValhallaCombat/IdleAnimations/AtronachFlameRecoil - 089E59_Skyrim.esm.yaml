@@ -1,0 +1,11 @@
+FormKey: 089E59:Skyrim.esm
+EditorID: AtronachFlameRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\AtronachFlame\Behaviors\AtronachFlameBehavior.hkx
+RelatedIdles:
+- 089E58:Skyrim.esm
+- Null
+AnimationGroupSection: 115

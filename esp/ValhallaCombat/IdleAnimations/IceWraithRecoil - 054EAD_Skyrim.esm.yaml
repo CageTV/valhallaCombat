@@ -1,0 +1,6 @@
+FormKey: 054EAD:Skyrim.esm
+EditorID: IceWraithRecoil
+Filename: Actors\IceWraith\Behaviors\IceWraithBehavior.hkx
+RelatedIdles:
+- 054EAC:Skyrim.esm
+- Null

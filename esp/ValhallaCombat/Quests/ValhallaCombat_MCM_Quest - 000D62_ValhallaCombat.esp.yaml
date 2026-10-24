@@ -1,0 +1,26 @@
+FormKey: 000D62:ValhallaCombat.esp
+EditorID: ValhallaCombat_MCM_Quest
+VirtualMachineAdapter:
+  Scripts:
+  - Name: valhallaCombat_MCM
+  FileName: ''
+  Aliases:
+  - Property:
+      Name: ''
+      Object: 000D62:ValhallaCombat.esp
+      Alias: 0
+    Scripts:
+    - Name: SKI_PlayerLoadGameAlias
+Name:
+  TargetLanguage: English
+  Value: ValhallaCombat_MCM_Quest
+Flags:
+- StartGameEnabled
+- 0x10
+- RunOnce
+NextAliasID: 1
+Aliases:
+- Name: PlayerAlias
+  Flags: []
+  ForcedReference: 000014:Skyrim.esm
+  VoiceTypes: Null

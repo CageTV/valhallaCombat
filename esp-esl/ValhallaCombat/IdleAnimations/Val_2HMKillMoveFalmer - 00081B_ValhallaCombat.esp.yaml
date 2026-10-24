@@ -1,0 +1,6 @@
+FormKey: 00081B:ValhallaCombat.esp
+EditorID: Val_2HMKillMoveFalmer
+RelatedIdles:
+- 000816:ValhallaCombat.esp
+- 000817:ValhallaCombat.esp
+AnimationGroupSection: 85

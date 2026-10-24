@@ -1,0 +1,7 @@
+FormKey: 00A9F9:ValhallaCombat.esp
+EditorID: Val_2HMSteamCenturionKillMoveA
+AnimationEvent: pa_KillMove2HMSteamCenturionA
+RelatedIdles:
+- 00A9F5:ValhallaCombat.esp
+- 00A9F6:ValhallaCombat.esp
+AnimationGroupSection: 69

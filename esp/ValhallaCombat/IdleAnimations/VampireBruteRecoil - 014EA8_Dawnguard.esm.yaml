@@ -1,0 +1,11 @@
+FormKey: 014EA8:Dawnguard.esm
+EditorID: VampireBruteRecoil
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\DLC01\VampireBrute\Behaviors\VampireBruteBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null
+AnimationGroupSection: 92

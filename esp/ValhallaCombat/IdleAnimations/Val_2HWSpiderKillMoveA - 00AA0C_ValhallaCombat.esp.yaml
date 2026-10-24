@@ -1,0 +1,7 @@
+FormKey: 00AA0C:ValhallaCombat.esp
+EditorID: Val_2HWSpiderKillMoveA
+AnimationEvent: pa_KillMove2HWSpiderSlamA
+RelatedIdles:
+- 00AA07:ValhallaCombat.esp
+- 00AA0B:ValhallaCombat.esp
+AnimationGroupSection: 108

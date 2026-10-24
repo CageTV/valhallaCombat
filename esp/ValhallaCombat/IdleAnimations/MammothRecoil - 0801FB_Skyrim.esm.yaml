@@ -1,0 +1,7 @@
+FormKey: 0801FB:Skyrim.esm
+EditorID: MammothRecoil
+Filename: Actors\Mammoth\Behaviors\MammothBehavior.hkx
+RelatedIdles:
+- 0801FA:Skyrim.esm
+- Null
+AnimationGroupSection: 58

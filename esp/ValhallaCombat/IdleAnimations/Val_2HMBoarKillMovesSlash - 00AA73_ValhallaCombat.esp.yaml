@@ -1,0 +1,7 @@
+FormKey: 00AA73:ValhallaCombat.esp
+EditorID: Val_2HMBoarKillMovesSlash
+AnimationEvent: pa_KillMove2HMBoarSlash
+RelatedIdles:
+- 00AA6F:ValhallaCombat.esp
+- 00AA70:ValhallaCombat.esp
+AnimationGroupSection: 69

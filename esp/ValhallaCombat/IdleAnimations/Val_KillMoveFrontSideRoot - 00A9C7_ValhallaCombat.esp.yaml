@@ -1,0 +1,65 @@
+FormKey: 00A9C7:ValhallaCombat.esp
+EditorID: Val_KillMoveFrontSideRoot
+Conditions:
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: GetAttackStateConditionData
+  ComparisonValue: 6
+- MutagenObjectType: ConditionFloat
+  CompareOperator: GreaterThanOrEqualTo
+  Data:
+    MutagenObjectType: GetTargetHeightConditionData
+  ComparisonValue: -35
+- MutagenObjectType: ConditionFloat
+  CompareOperator: LessThanOrEqualTo
+  Data:
+    MutagenObjectType: GetTargetHeightConditionData
+  ComparisonValue: 35
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetPairedAnimationConditionData
+    RunOnType: Target
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetIsIDConditionData
+    RunOnType: Target
+    Object: 000007:Skyrim.esm
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: GetEquippedItemTypeConditionData
+    ItemSource: Right
+  ComparisonValue: 7
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: IsBlockingConditionData
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: IsFurnitureAnimTypeConditionData
+    RunOnType: Target
+    FurnitureAnimType: Sit
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: GetPairedAnimationConditionData
+    RunOnType: Target
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  CompareOperator: NotEqualTo
+  Data:
+    MutagenObjectType: IsStaggeredConditionData
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetActorValueConditionData
+    RunOnType: Target
+    ActorValue: Paralysis
+RelatedIdles:
+- 000990:Update.esm
+- 00AA81:ValhallaCombat.esp
+AnimationGroupSection: 101

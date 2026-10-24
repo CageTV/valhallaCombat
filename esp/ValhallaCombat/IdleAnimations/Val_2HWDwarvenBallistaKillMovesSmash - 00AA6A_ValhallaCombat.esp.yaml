@@ -1,0 +1,7 @@
+FormKey: 00AA6A:ValhallaCombat.esp
+EditorID: Val_2HWDwarvenBallistaKillMovesSmash
+AnimationEvent: pa_KillMove2HWDwarvenBallistaSlash
+RelatedIdles:
+- 00AA67:ValhallaCombat.esp
+- 00AA69:ValhallaCombat.esp
+AnimationGroupSection: 108

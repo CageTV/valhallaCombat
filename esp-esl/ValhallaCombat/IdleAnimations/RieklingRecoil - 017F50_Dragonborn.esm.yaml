@@ -1,0 +1,7 @@
+FormKey: 017F50:Dragonborn.esm
+EditorID: RieklingRecoil
+Filename: Actors\DLC02\Riekling\Behaviors\RieklingBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null
+AnimationGroupSection: 114

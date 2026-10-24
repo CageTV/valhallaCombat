@@ -1,0 +1,6 @@
+FormKey: 000825:ValhallaCombat.esp
+EditorID: Val_KillMoveChaurusFlyer
+RelatedIdles:
+- 000805:ValhallaCombat.esp
+- 00081F:ValhallaCombat.esp
+AnimationGroupSection: 18

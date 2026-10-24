@@ -1,0 +1,7 @@
+FormKey: 00AA55:ValhallaCombat.esp
+EditorID: Val_KillMoveDecapSlash
+AnimationEvent: pa_KillMove1HMDecap
+RelatedIdles:
+- 00AA51:ValhallaCombat.esp
+- 00AA52:ValhallaCombat.esp
+AnimationGroupSection: 66

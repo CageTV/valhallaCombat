@@ -1,0 +1,7 @@
+FormKey: 073F14:Skyrim.esm
+EditorID: GoatRecoil
+Filename: Actors\Goat\Behaviors\GoatBehavior.hkx
+RelatedIdles:
+- 073F13:Skyrim.esm
+- Null
+AnimationGroupSection: 47

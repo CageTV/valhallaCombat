@@ -1,3 +1,4 @@
+#include "include/FormIds.h"
 #include "include/data.h"
 #include "include/stunHandler.h"
 #include "include/Utils.h"
@@ -62,7 +63,7 @@ void data::loadBlockFX(RE::TESDataHandler* a_data) {
 
 bool data::lookupIdle(RE::TESDataHandler* data, RE::FormID form, std::string pluginName, 
 	std::vector<RE::TESIdleForm*>* idleContainer) {
-	auto idle = data->LookupForm<RE::TESIdleForm>(form, pluginName);
+	auto idle = data->LookupForm<RE::TESIdleForm>(VCIds::Remap(pluginName, form), pluginName);
 	if (!idle) {
 		return false;
 	}

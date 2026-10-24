@@ -1,0 +1,7 @@
+FormKey: 0008A5:ValhallaCombat.esp
+EditorID: Val_1HMDwarvenBallistarKillMoves
+AnimationEvent: pa_KillMove1HMDwarvenBallistaSlash
+RelatedIdles:
+- 0008A4:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

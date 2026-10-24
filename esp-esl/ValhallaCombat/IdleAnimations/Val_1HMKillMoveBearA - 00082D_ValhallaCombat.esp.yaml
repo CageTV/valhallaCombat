@@ -1,0 +1,7 @@
+FormKey: 00082D:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveBearA
+AnimationEvent: pa_KillMoveBearA
+RelatedIdles:
+- 00082C:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 69

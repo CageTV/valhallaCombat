@@ -1,0 +1,7 @@
+FormKey: 042B04:Skyrim.esm
+EditorID: SpiderRecoilsStart
+Filename: Actors\FrostbiteSpider\Behaviors\FrostbiteSpiderBehavior.hkx
+RelatedIdles:
+- 03E68C:Skyrim.esm
+- Null
+AnimationGroupSection: 68

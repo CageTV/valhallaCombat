@@ -1,0 +1,14 @@
+FormKey: 00080D:ValhallaCombat.esp
+EditorID: Val_2HWDragonKillMoveSlash
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetIsRaceConditionData
+    RunOnType: Target
+    Race: 012E82:Skyrim.esm
+  ComparisonValue: 1
+AnimationEvent: pa_KillMove2HWDragonSlash
+RelatedIdles:
+- 00080B:ValhallaCombat.esp
+- 00080C:ValhallaCombat.esp
+AnimationGroupSection: 77

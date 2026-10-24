@@ -1,0 +1,6 @@
+FormKey: 00AA51:ValhallaCombat.esp
+EditorID: Val_KillMoveShortBlade
+RelatedIdles:
+- 00AA2E:ValhallaCombat.esp
+- 00AA4B:ValhallaCombat.esp
+AnimationGroupSection: 58

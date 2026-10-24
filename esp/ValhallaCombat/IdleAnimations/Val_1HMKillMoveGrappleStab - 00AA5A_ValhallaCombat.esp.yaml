@@ -1,0 +1,6 @@
+FormKey: 00AA5A:ValhallaCombat.esp
+EditorID: Val_1HMKillMoveGrappleStab
+AnimationEvent: pa_KillMove1HMGrappleStab
+RelatedIdles:
+- 00AA51:ValhallaCombat.esp
+- 00AA59:ValhallaCombat.esp

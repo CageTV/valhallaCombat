@@ -1,0 +1,10 @@
+FormKey: 0505E0:Skyrim.esm
+EditorID: CentRecoilRoot
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\DwarvenSteamCenturion\Behaviors\SteamBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null

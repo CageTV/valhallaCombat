@@ -1,0 +1,7 @@
+FormKey: 00AA3A:ValhallaCombat.esp
+EditorID: Val_H2HKillMoveKneeThrow
+AnimationEvent: pa_KillMoveH2HKneeThrow
+RelatedIdles:
+- 00AA39:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

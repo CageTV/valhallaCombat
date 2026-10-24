@@ -1,0 +1,7 @@
+FormKey: 03CC03:Skyrim.esm
+EditorID: CowRecoil
+Filename: Actors\Cow\Behaviors\H-CowBehavior.hkx
+RelatedIdles:
+- 03CBFD:Skyrim.esm
+- Null
+AnimationGroupSection: 50

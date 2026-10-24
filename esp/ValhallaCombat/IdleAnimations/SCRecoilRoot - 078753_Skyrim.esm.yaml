@@ -1,0 +1,10 @@
+FormKey: 078753:Skyrim.esm
+EditorID: SCRecoilRoot
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsPowerAttackingConditionData
+Filename: Actors\DwarvenSphereCenturion\Behaviors\SCBehavior.hkx
+RelatedIdles:
+- 013AF5:Skyrim.esm
+- Null

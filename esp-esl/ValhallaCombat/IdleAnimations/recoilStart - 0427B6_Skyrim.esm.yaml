@@ -1,0 +1,7 @@
+FormKey: 0427B6:Skyrim.esm
+EditorID: recoilStart
+Filename: Actors\Slaughterfish\Behaviors\SlaughterfishBehavior.hkx
+RelatedIdles:
+- 0427B5:Skyrim.esm
+- Null
+AnimationGroupSection: 17

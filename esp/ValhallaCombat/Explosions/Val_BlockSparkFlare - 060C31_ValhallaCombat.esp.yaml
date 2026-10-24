@@ -1,0 +1,10 @@
+FormKey: 060C31:ValhallaCombat.esp
+EditorID: Val_BlockSparkFlare
+Model:
+  File: ValhallaCombat\SparksFlare.nif
+Force: 1
+Radius: 140
+VerticalOffsetMult: 100
+Flags:
+- 0x1
+- IgnoreImageSpaceSwap

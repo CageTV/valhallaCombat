@@ -1,0 +1,6 @@
+FormKey: 0008B9:ValhallaCombat.esp
+EditorID: Val_1HMRieklingKillMoves
+RelatedIdles:
+- 0008B8:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 108

@@ -1,0 +1,7 @@
+FormKey: 00AA53:ValhallaCombat.esp
+EditorID: Val_KillingBlowBleedOutDecap
+AnimationEvent: pa_KillMove1HMDecapBleedOut
+RelatedIdles:
+- 00AA52:ValhallaCombat.esp
+- Null
+AnimationGroupSection: 117

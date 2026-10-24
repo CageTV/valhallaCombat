@@ -1,0 +1,6 @@
+FormKey: 00AA1D:ValhallaCombat.esp
+EditorID: Val_1HM_KillMoveTroll
+RelatedIdles:
+- 00A9C7:ValhallaCombat.esp
+- 00AA16:ValhallaCombat.esp
+AnimationGroupSection: 2

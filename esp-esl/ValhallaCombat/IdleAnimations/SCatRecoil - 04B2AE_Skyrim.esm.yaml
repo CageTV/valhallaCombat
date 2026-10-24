@@ -1,0 +1,7 @@
+FormKey: 04B2AE:Skyrim.esm
+EditorID: SCatRecoil
+Filename: Actors\SabreCat\Behaviors\SabreCatBehavior.hkx
+RelatedIdles:
+- 01C75F:Skyrim.esm
+- Null
+AnimationGroupSection: 55

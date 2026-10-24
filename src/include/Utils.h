@@ -1,4 +1,5 @@
 #pragma once
+#include "include/FormIds.h"
 #include <algorithm>
 #include "offsets.h"
 #include "bin/ValhallaCombat.hpp"
@@ -557,7 +558,7 @@ namespace DtryUtils
 		template <class formType>
 		void load(formType*& formRet, RE::FormID formID)
 		{
-			formRet = _dataHandler->LookupForm<formType>(formID, _pluginName);
+			formRet = _dataHandler->LookupForm<formType>(VCIds::Remap(_pluginName.c_str(), formID), _pluginName);
 			if (!formRet) {
 				logger::critical("Error: null formID or wrong form type when loading {} from {}", formID, _pluginName);
 			}

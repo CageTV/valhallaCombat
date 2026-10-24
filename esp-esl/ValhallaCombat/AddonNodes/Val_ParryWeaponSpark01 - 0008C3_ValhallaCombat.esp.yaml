@@ -1,0 +1,8 @@
+FormKey: 0008C3:ValhallaCombat.esp
+EditorID: Val_ParryWeaponSpark01
+Model:
+  File: ValhallaCombat\customFx\impactWeapon.nif
+  Data: 0x020000000000000000000000
+NodeIndex: 901
+Sound: 000803:ValhallaCombat.esp
+Flags: AlwaysLoaded
