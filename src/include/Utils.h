@@ -533,7 +533,7 @@ namespace DtryUtils
 	private:
 		RE::BSFixedString _pluginName;
 		RE::TESDataHandler* _dataHandler;
-		int _loadedForms;
+		int _loadedForms = 0;
 
 	public:
 		formLoader(RE::BSFixedString pluginName)
