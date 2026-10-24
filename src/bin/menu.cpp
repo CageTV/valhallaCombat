@@ -115,6 +115,50 @@ namespace VCMenu
 			return buf;
 		}
 
+		bool g_captureArmed = false;  // the click that started the capture must be released first
+
+		/* While a key bind waits, the menu overlay owns the input and the game's input handler gets nothing, so the press is read from the overlay and
+		translated to the game's codes (keyboard scan code, mouse button + 256). Returns -1 for nothing yet, -2 for cancel (Escape), else the code. */
+		int PollCapture()
+		{
+			if (!g_captureArmed) {
+				g_captureArmed = !IsMouseDown(0);
+				return -1;
+			}
+			struct Map { ImGuiKey key; int code; };
+			static const Map keys[] = {
+				{ ImGuiKey_1, 2 }, { ImGuiKey_2, 3 }, { ImGuiKey_3, 4 }, { ImGuiKey_4, 5 }, { ImGuiKey_5, 6 }, { ImGuiKey_6, 7 }, { ImGuiKey_7, 8 }, { ImGuiKey_8, 9 }, { ImGuiKey_9, 10 },
+				{ ImGuiKey_0, 11 }, { ImGuiKey_Minus, 12 }, { ImGuiKey_Equal, 13 }, { ImGuiKey_Backspace, 14 }, { ImGuiKey_Tab, 15 },
+				{ ImGuiKey_Q, 16 }, { ImGuiKey_W, 17 }, { ImGuiKey_E, 18 }, { ImGuiKey_R, 19 }, { ImGuiKey_T, 20 }, { ImGuiKey_Y, 21 }, { ImGuiKey_U, 22 }, { ImGuiKey_I, 23 },
+				{ ImGuiKey_O, 24 }, { ImGuiKey_P, 25 }, { ImGuiKey_LeftBracket, 26 }, { ImGuiKey_RightBracket, 27 }, { ImGuiKey_Enter, 28 }, { ImGuiKey_LeftCtrl, 29 },
+				{ ImGuiKey_A, 30 }, { ImGuiKey_S, 31 }, { ImGuiKey_D, 32 }, { ImGuiKey_F, 33 }, { ImGuiKey_G, 34 }, { ImGuiKey_H, 35 }, { ImGuiKey_J, 36 }, { ImGuiKey_K, 37 },
+				{ ImGuiKey_L, 38 }, { ImGuiKey_Semicolon, 39 }, { ImGuiKey_Apostrophe, 40 }, { ImGuiKey_GraveAccent, 41 }, { ImGuiKey_LeftShift, 42 }, { ImGuiKey_Backslash, 43 },
+				{ ImGuiKey_Z, 44 }, { ImGuiKey_X, 45 }, { ImGuiKey_C, 46 }, { ImGuiKey_V, 47 }, { ImGuiKey_B, 48 }, { ImGuiKey_N, 49 }, { ImGuiKey_M, 50 }, { ImGuiKey_Comma, 51 },
+				{ ImGuiKey_Period, 52 }, { ImGuiKey_Slash, 53 }, { ImGuiKey_RightShift, 54 }, { ImGuiKey_KeypadMultiply, 55 }, { ImGuiKey_LeftAlt, 56 }, { ImGuiKey_Space, 57 },
+				{ ImGuiKey_CapsLock, 58 }, { ImGuiKey_F1, 59 }, { ImGuiKey_F2, 60 }, { ImGuiKey_F3, 61 }, { ImGuiKey_F4, 62 }, { ImGuiKey_F5, 63 }, { ImGuiKey_F6, 64 },
+				{ ImGuiKey_F7, 65 }, { ImGuiKey_F8, 66 }, { ImGuiKey_F9, 67 }, { ImGuiKey_F10, 68 }, { ImGuiKey_NumLock, 69 }, { ImGuiKey_ScrollLock, 70 },
+				{ ImGuiKey_Keypad7, 71 }, { ImGuiKey_Keypad8, 72 }, { ImGuiKey_Keypad9, 73 }, { ImGuiKey_KeypadSubtract, 74 }, { ImGuiKey_Keypad4, 75 }, { ImGuiKey_Keypad5, 76 },
+				{ ImGuiKey_Keypad6, 77 }, { ImGuiKey_KeypadAdd, 78 }, { ImGuiKey_Keypad1, 79 }, { ImGuiKey_Keypad2, 80 }, { ImGuiKey_Keypad3, 81 }, { ImGuiKey_Keypad0, 82 },
+				{ ImGuiKey_KeypadDecimal, 83 }, { ImGuiKey_F11, 87 }, { ImGuiKey_F12, 88 }, { ImGuiKey_KeypadEnter, 156 }, { ImGuiKey_RightCtrl, 157 }, { ImGuiKey_KeypadDivide, 181 },
+				{ ImGuiKey_PrintScreen, 183 }, { ImGuiKey_RightAlt, 184 }, { ImGuiKey_Home, 199 }, { ImGuiKey_UpArrow, 200 }, { ImGuiKey_PageUp, 201 }, { ImGuiKey_LeftArrow, 203 },
+				{ ImGuiKey_RightArrow, 205 }, { ImGuiKey_End, 207 }, { ImGuiKey_DownArrow, 208 }, { ImGuiKey_PageDown, 209 }, { ImGuiKey_Insert, 210 }, { ImGuiKey_Delete, 211 },
+			};
+			if (IsKeyPressed(ImGuiKey_Escape, false)) {
+				return -2;
+			}
+			for (const auto& m : keys) {
+				if (IsKeyPressed(m.key, false)) {
+					return m.code;
+				}
+			}
+			for (int b = 0; b < 5; ++b) {
+				if (IsMouseClicked(b, false)) {
+					return 256 + b;
+				}
+			}
+			return -1;
+		}
+
 		bool HiddenState(Hidden h)
 		{
 			switch (h) {
@@ -176,7 +220,17 @@ namespace VCMenu
 		void RenderPage(int a_page)
 		{
 			const auto& page = kPages[a_page];
-			bool        state[16]{};
+			if (g_capture) {
+				const int code = PollCapture();
+				if (code == -2) {
+					g_capture = nullptr;
+				} else if (code >= 0) {
+					const Entry* entry = g_capture;
+					g_capture = nullptr;
+					Commit(*entry, static_cast<float>(code));
+				}
+			}
+			bool state[16]{};
 			for (int i = 0; i < page.count; ++i) {
 				const auto& e = page.entries[i];
 				if (e.control > 0 && e.control < 16) {
@@ -246,6 +300,7 @@ namespace VCMenu
 					const std::string button = std::string(waiting ? "Press a key..." : KeyName(static_cast<int>(Get(e)))) + "##bind" + e.key;
 					if (Button(button.c_str())) {
 						g_capture = waiting ? nullptr : &e;
+						g_captureArmed = false;
 					}
 					SameLine();
 					if (Button((std::string("Clear##") + e.key).c_str())) {
