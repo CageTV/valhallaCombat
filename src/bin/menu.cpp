@@ -203,8 +203,26 @@ namespace VCMenu
 			}
 		}
 
+		constexpr const char* kLogoPath = "Data\\Interface\\ValhallaCombat\\vacsa_logo.png";
+		constexpr float       kLogoAspect = 339.0f / 1024.0f;
+
+		// the Valhalla - A Combat Survival Accord logo at the top of the Overview page
+		void Logo()
+		{
+			static ImTextureID tex = SKSEMenuFramework::LoadTexture(kLogoPath);
+			if (!tex) {
+				return;
+			}
+			const float avail = GetContentRegionAvail().x;
+			const float w = std::min(avail, 560.0f);
+			SetCursorPosX(GetCursorPosX() + (avail - w) * 0.5f);
+			Image(tex, ImVec2(w, w * kLogoAspect));
+			Spacing();
+		}
+
 		void __stdcall RenderOverview()
 		{
+			Logo();
 			TextUnformatted("Valhalla Combat - settings in SKSE Menu Framework (SkyUI and MCM Helper are not needed).");
 			Spacing();
 			const auto line = [](const char* name, bool ok) {
